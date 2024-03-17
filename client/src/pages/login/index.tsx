@@ -15,7 +15,7 @@ const Login = () => {
         // bg={useColorModeValue("gray.300", "gray.900")}
       >
         <Heading as="h4" size="md" mb={5}>
-          Create an Account
+          Login
         </Heading>
         <Input text="Email" />
         <Input text="Password" />
