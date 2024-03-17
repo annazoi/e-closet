@@ -1,13 +1,17 @@
-import { Button as ChakraButton, useColorModeValue } from "@chakra-ui/react";
+import {
+  Button as ChakraButton,
+  useColorModeValue,
+  ButtonProps as ChakraButtonProps,
+} from "@chakra-ui/react";
 
-interface ButtonProps {
+type ButtonProps = {
   color?: string;
-  variant?: string;
+  variant?: ChakraButtonProps["variant"];
   leftIcon?: any;
   rightIcon?: any;
   name?: string;
   onClick?: () => void;
-}
+} & React.ComponentProps<typeof ChakraButton>;
 
 const Button = ({
   color,
@@ -16,6 +20,7 @@ const Button = ({
   rightIcon,
   name,
   onClick,
+  ...rest
 }: ButtonProps) => {
   return (
     <ChakraButton
@@ -25,6 +30,7 @@ const Button = ({
       rightIcon={rightIcon}
       w={"100%"}
       onClick={onClick}
+      {...rest}
     >
       {name}
     </ChakraButton>

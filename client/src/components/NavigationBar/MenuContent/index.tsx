@@ -4,6 +4,7 @@ import { BiCloset } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoMdSettings, IoMdLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { useColorModeValue } from "@chakra-ui/react";
 
 export const Links: any = [
   {
@@ -47,6 +48,7 @@ const MenuContent = () => {
           key={link.id}
           name={link.name}
           leftIcon={link.icon}
+          color={useColorModeValue("pink.200", "gray.700")}
           onClick={() => {
             navigate(link.path);
           }}

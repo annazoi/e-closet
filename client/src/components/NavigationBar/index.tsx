@@ -31,7 +31,7 @@ const NavigationBar = (props: any) => {
         h={"50px"}
       >
         <IconButton
-          bg={useColorModeValue("white", "gray.800")}
+          bg={useColorModeValue("pink.200", "gray.800")}
           display={{ base: "flex", md: "none" }}
           onClick={onOpen}
           variant="outline"
