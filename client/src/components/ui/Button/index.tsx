@@ -6,9 +6,17 @@ interface ButtonProps {
   leftIcon?: any;
   rightIcon?: any;
   name?: string;
+  onClick?: () => void;
 }
 
-const Button = ({ color, variant, leftIcon, rightIcon, name }: ButtonProps) => {
+const Button = ({
+  color,
+  variant,
+  leftIcon,
+  rightIcon,
+  name,
+  onClick,
+}: ButtonProps) => {
   return (
     <ChakraButton
       bg={color ? color : useColorModeValue("pink.300", "black")}
@@ -16,6 +24,7 @@ const Button = ({ color, variant, leftIcon, rightIcon, name }: ButtonProps) => {
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       w={"100%"}
+      onClick={onClick}
     >
       {name}
     </ChakraButton>

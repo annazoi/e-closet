@@ -1,30 +1,34 @@
-import { useNavigate } from "react-router-dom";
 import {
   Box,
   Heading,
   useColorModeValue,
   IconButton,
   useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  HStack,
+  Flex,
+  Icon,
 } from "@chakra-ui/react";
+
+import { Link, useNavigate } from "react-router-dom";
 import { CiMenuBurger } from "react-icons/ci";
-import MenuToolBar from "../MenuToolBar";
-import MenuContent from "../MenuToolBar/MenuContent";
+import MenuContent from "./MenuContent";
 
 const NavigationBar = (props: any) => {
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Box
-        style={{
-          //   border: "1px solid red",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "50px",
-        }}
         bg={useColorModeValue("pink.300", "gray.800")}
+        position={"fixed"}
+        top={0}
+        left={0}
+        w={"100%"}
+        h={"50px"}
       >
         <IconButton
           bg={useColorModeValue("white", "gray.800")}
@@ -37,21 +41,27 @@ const NavigationBar = (props: any) => {
           ml={1}
         ></IconButton>
       </Box>
-      <MenuToolBar isOpen={isOpen} onClose={onClose} />
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent bg={useColorModeValue("pink.100", "gray.800")}>
+          <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
+          <DrawerBody>
+            <MenuContent />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
       <Box
         boxShadow={"0 2px 5px 2px rgba(0,0,0,0.2)"}
-        position="fixed"
+        pos={"fixed"}
+        top={0}
+        left={0}
+        h={"full"}
+        w={{ base: "full", md: 60 }}
+        bg={useColorModeValue("pink.100", "gray.800")}
         display={{
           base: "none",
           md: "block",
         }}
-        style={{
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "250px",
-        }}
-        bg={useColorModeValue("pink.100", "gray.800")}
       >
         <Heading
           style={{
@@ -67,6 +77,10 @@ const NavigationBar = (props: any) => {
         <div style={{ padding: "10px" }}>
           <MenuContent />
         </div>
+      </Box>
+      {/*   <Box as="main" ml={{ base: 0, md: isLoggedIn ? 60 : 0 }} p="4"> */}
+      <Box as="main" ml={{ base: 0, md: 60 }} mt={8}>
+        {props.children}
       </Box>
     </>
   );

@@ -1,8 +1,9 @@
 import { Box, useColorModeValue, Heading, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/ui/Input";
+import { FC } from "react";
 
-const Register = () => {
+const Register: FC = () => {
   const navigate = useNavigate();
   return (
     <>

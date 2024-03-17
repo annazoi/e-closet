@@ -1,8 +1,9 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import Input from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 
-const Login = () => {
+const Login: FC = () => {
   const navigate = useNavigate();
   return (
     <>

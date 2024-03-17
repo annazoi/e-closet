@@ -1,9 +1,9 @@
-import Button from "../../ui/Input/Button";
-import { grid } from "@chakra-ui/react";
+import Button from "../../ui/Button";
 import { FaHome } from "react-icons/fa";
 import { BiCloset } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoMdSettings, IoMdLogOut } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 export const Links: any = [
   {
@@ -39,6 +39,7 @@ export const Links: any = [
 ];
 
 const MenuContent = () => {
+  const navigate = useNavigate();
   return (
     <div style={{ display: "grid", gap: "20px" }}>
       {Links.map((link: any) => (
@@ -46,6 +47,9 @@ const MenuContent = () => {
           key={link.id}
           name={link.name}
           leftIcon={link.icon}
+          onClick={() => {
+            navigate(link.path);
+          }}
           //   _hover={{
           //     textDecoration: "none",
           //     bg: "primary.400",
