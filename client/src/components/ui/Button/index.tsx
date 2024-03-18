@@ -25,7 +25,6 @@ const Button = ({
   return (
     <ChakraButton
       bg={color ? color : useColorModeValue("pink.300", "black")}
-      variant={variant ? variant : "solid"}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       w={"100%"}

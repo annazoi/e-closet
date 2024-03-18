@@ -1,5 +1,6 @@
 import { Select } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useState } from "react";
+import ImagePicker from "../../../components/ui/ImagePicker";
 
 const Seasons = [
   {
@@ -69,23 +70,27 @@ const WomanCategories = [
 ];
 
 const CreateItem: FC = () => {
+  const [image, setImage] = useState<string>("");
   return (
-    <div style={{ display: "grid", gap: "35px" }}>
-      <Select placeholder="Select Season">
-        {Seasons.map((season: any) => (
-          <option key={season.id} value={season.name}>
-            {season.name}
-          </option>
-        ))}
-      </Select>
-      <Select placeholder="Select Category">
-        {WomanCategories.map((category: any) => (
-          <option key={category.id} value={category.name}>
-            {category.name}
-          </option>
-        ))}
-      </Select>
-    </div>
+    <>
+      <div style={{ display: "grid", gap: "35px" }}>
+        <Select placeholder="Select Season">
+          {Seasons.map((season: any) => (
+            <option key={season.id} value={season.name}>
+              {season.name}
+            </option>
+          ))}
+        </Select>
+        <Select placeholder="Select Category">
+          {WomanCategories.map((category: any) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </Select>
+        <ImagePicker image={image} setImage={setImage} />
+      </div>
+    </>
   );
 };
 export default CreateItem;
