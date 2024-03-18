@@ -9,12 +9,8 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  HStack,
-  Flex,
-  Icon,
 } from "@chakra-ui/react";
 
-import { Link, useNavigate } from "react-router-dom";
 import { CiMenuBurger } from "react-icons/ci";
 import MenuContent from "./MenuContent";
 

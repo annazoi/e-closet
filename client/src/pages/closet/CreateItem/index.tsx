@@ -1,4 +1,4 @@
-import { FormLabel, Input, Select } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 import { FC } from "react";
 
 const Seasons = [

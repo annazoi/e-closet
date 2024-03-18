@@ -1,5 +1,5 @@
-import { Box, ButtonGroup, Heading, useDisclosure } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { Box, ButtonGroup, useDisclosure } from "@chakra-ui/react";
+import { FC } from "react";
 import Button from "../../components/ui/Button";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";

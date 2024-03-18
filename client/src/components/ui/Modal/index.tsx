@@ -1,7 +1,5 @@
 import {
   Modal as ChakraModal,
-  FormControl,
-  FormLabel,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -11,7 +9,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import Button from "../Button";
-import Input from "../Input";
+// import Input from "../Input";
 import { FC } from "react";
 
 type ModalProps = {
