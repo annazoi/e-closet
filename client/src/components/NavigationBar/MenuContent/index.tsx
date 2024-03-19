@@ -6,34 +6,30 @@ import { IoMdSettings, IoMdLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useColorModeValue } from "@chakra-ui/react";
 import { authStore } from "../../../store/authStore";
-export const Links: any = [
+export const isLoggedInLinks: any = [
   {
     id: 1,
     name: "Home",
     path: "/home",
     icon: <FaHome />,
-    onClick: () => {},
   },
   {
     id: 2,
     name: "My Closet",
     path: "/closet",
     icon: <BiCloset />,
-    onClick: () => {},
   },
   {
     id: 3,
     name: "Profile",
     path: "/profile",
     icon: <CgProfile />,
-    onClick: () => {},
   },
   {
     id: 4,
     name: "Settings",
     path: "/settings",
     icon: <IoMdSettings />,
-    onClick: () => {},
   },
   // {
   //   id: 5,
@@ -44,36 +40,71 @@ export const Links: any = [
   // },
 ];
 
+const isLogOutLinks: any = [
+  {
+    id: 1,
+    name: "About Us",
+    path: "/about",
+    icon: <FaHome />,
+  },
+  {
+    id: 2,
+    name: "Contact",
+    path: "/contact",
+    icon: <BiCloset />,
+  },
+];
+
 const MenuContent = () => {
   const navigate = useNavigate();
-  const { logOut } = authStore((state) => state);
+  const { logOut, isLoggedIn } = authStore((state) => state);
   return (
     <div style={{ display: "grid", gap: "20px" }}>
-      {Links.map((link: any) => (
+      {isLoggedIn
+        ? isLoggedInLinks.map((link: any) => (
+            <Button
+              key={link.id}
+              name={link.name}
+              leftIcon={link.icon}
+              color={useColorModeValue("pink.200", "gray.700")}
+              onClick={() => {
+                navigate(link.path);
+              }}
+              //   _hover={{
+              //     textDecoration: "none",
+              //     bg: "primary.400",
+              //     color: "white",
+              //   }}
+            />
+          ))
+        : isLogOutLinks.map((link: any) => (
+            <Button
+              key={link.id}
+              name={link.name}
+              leftIcon={link.icon}
+              color={useColorModeValue("pink.200", "gray.700")}
+              onClick={() => {
+                navigate(link.path);
+              }}
+              //   _hover={{
+              //     textDecoration: "none",
+              //     bg: "primary.400",
+              //     color: "white",
+              //   }}
+            />
+          ))}
+
+      {isLoggedIn && (
         <Button
-          key={link.id}
-          name={link.name}
-          leftIcon={link.icon}
-          color={useColorModeValue("pink.200", "gray.700")}
+          name="Logout"
+          leftIcon={<IoMdLogOut />}
           onClick={() => {
-            navigate(link.path);
+            logOut();
+            navigate("/login");
           }}
-          //   _hover={{
-          //     textDecoration: "none",
-          //     bg: "primary.400",
-          //     color: "white",
-          //   }}
+          color={useColorModeValue("pink.200", "gray.700")}
         />
-      ))}
-      <Button
-        name="Logout"
-        leftIcon={<IoMdLogOut />}
-        onClick={() => {
-          logOut();
-          navigate("/login");
-        }}
-        color={useColorModeValue("pink.200", "gray.700")}
-      />
+      )}
     </div>
   );
 };

@@ -65,12 +65,14 @@ const Login: FC = () => {
             error={errors.password?.message}
           />
           <Button
-            mb={5}
+            mt={5}
+            mb={8}
             name="Sign Ip"
             type="submit"
             loadingText="Submitting"
           ></Button>
           <Button
+            mb={3}
             onClick={() => {
               navigate("/register");
             }}
