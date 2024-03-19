@@ -1,3 +1,0 @@
-# CLIENT
-
-npm run dev

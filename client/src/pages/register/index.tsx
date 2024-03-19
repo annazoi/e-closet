@@ -18,9 +18,9 @@ const Register: FC = () => {
     handleSubmit,
     register,
     reset,
-    getValues,
+    // getValues,
     formState: { errors },
-    setValue,
+    // setValue,
   } = useForm({
     resolver: yupResolver(SignupSchema as any),
   });
