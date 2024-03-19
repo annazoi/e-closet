@@ -8,8 +8,10 @@ import { SignInSchema } from "../../validation-schemas/auth";
 import { useMutation } from "react-query";
 import Button from "../../components/ui/Button";
 import { signIn } from "../../services/auth";
+import { authStore } from "../../store/authStore";
 
 const Login: FC = () => {
+  const { logIn } = authStore((state) => state);
   const navigate = useNavigate();
 
   const { mutate: signInMuutate } = useMutation(signIn);
@@ -18,17 +20,21 @@ const Login: FC = () => {
     handleSubmit,
     register,
     reset,
-    getValues,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(SignInSchema as any),
   });
 
-  function onSubmit(data: any) {
-    signInMuutate(data, {
-      onSuccess: () => {
-        console.log("success", data);
+  function onSubmit(values: any) {
+    signInMuutate(values, {
+      onSuccess: (data) => {
+        logIn({
+          ...data.user,
+          token: data.token,
+          exp: data.exp,
+          userId: data.user._id,
+        });
+        console.log("data", data);
         reset();
         navigate("/home");
       },
