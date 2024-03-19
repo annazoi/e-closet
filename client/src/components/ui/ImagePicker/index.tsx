@@ -52,7 +52,7 @@ const ImagePicker = ({ setImage, image }: ImagePickerProps) => {
           mr={2}
         ></Button>
         <Button
-          onClick={handleGallery}
+          onClick={handleCamera}
           w={"30%"}
           name="Take Photo"
           rightIcon={<FaCamera />}
