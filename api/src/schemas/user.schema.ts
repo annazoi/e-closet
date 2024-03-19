@@ -25,7 +25,14 @@ export class User {
     format: 'number',
   })
   @Prop()
-  age: string;
+  age?: number;
+
+  @ApiProperty({
+    description: 'the avatar of the user',
+    format: 'string',
+  })
+  @Prop()
+  avatar?: string;
 
   @ApiProperty({
     description: 'The password of the user',

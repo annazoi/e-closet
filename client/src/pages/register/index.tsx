@@ -6,8 +6,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { SignupSchema } from "../../validation-schemas/auth";
 import Button from "../../components/ui/Button";
+import { signUp } from "../../services/auth";
+import { useMutation } from "react-query";
+import { authStore } from "../../store/authStore";
 
 const Register: FC = () => {
+  const { logIn } = authStore((state) => state);
+
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -20,8 +25,27 @@ const Register: FC = () => {
     resolver: yupResolver(SignupSchema as any),
   });
 
-  function onSubmit(data: any) {
-    console.log(data);
+  const { mutate: signUpMutate } = useMutation(signUp);
+
+  function onSubmit(values: any) {
+    // const age = parseInt(data.age);
+
+    signUpMutate(
+      { ...values },
+
+      {
+        onSuccess: (data) => {
+          logIn({
+            ...data.user,
+            token: data.token,
+            exp: data.exp,
+            userId: data.user._id,
+          });
+          reset();
+          navigate("/home");
+        },
+      }
+    );
   }
 
   return (
@@ -48,12 +72,12 @@ const Register: FC = () => {
             register={register("email")}
             error={errors.email?.message}
           />
-          <Input
+          {/* <Input
             text="Age"
             numberInput={15}
             register={register("age")}
             error={errors.age?.message}
-          />
+          /> */}
           <Input
             text="Password"
             register={register("password")}

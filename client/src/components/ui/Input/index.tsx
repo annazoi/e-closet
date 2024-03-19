@@ -6,6 +6,7 @@ import {
   NumberIncrementStepper,
   NumberInput,
   NumberInputStepper,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 type InputProps = {
@@ -32,7 +33,7 @@ const Input: React.FC<InputProps> = ({
             {...register}
             {...error}
             mb={5}
-            boxShadow={"0 2px 5px 0 rgba(0,0,0,0.2)"}
+            boxShadow={`0 2px 15px 0 ${useColorModeValue("pink", "white")}`}
             placeholder={placeholder}
           />
         </>
@@ -40,10 +41,12 @@ const Input: React.FC<InputProps> = ({
         <>
           <Text mb={2}>{text}</Text>
           <NumberInput
+            boxShadow={`0 2px 15px 0 ${useColorModeValue("pink", "white")}`}
             defaultValue={numberInput}
             min={5}
             mb={5}
-            boxShadow={"0 2px 5px 0 rgba(0,0,0,0.2)"}
+            {...register}
+            {...error}
           >
             <NumberInputField />
             <NumberInputStepper>
