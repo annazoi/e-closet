@@ -1,7 +1,6 @@
 import { FC, useState } from "react";
-import { MdCancel } from "react-icons/md";
-import ImagePicker from "../../../components/ui/ImagePicker";
 import { Resizable } from "react-resizable";
+import { ResizableBox } from "react-resizable";
 import {
   Accordion,
   AccordionItem,
@@ -12,17 +11,6 @@ import {
   Image,
   Stack,
 } from "@chakra-ui/react";
-import React from "react";
-
-class Example extends React.Component {
-  state = {
-    width: 200,
-    height: 200,
-  };
-  onResize = (event: any, { node, size, handle }: any) => {
-    this.setState({ width: size.width, height: size.height });
-  };
-}
 
 const CreateOutfit: FC = () => {
   const [image, setImage] = useState<string>("");
@@ -41,23 +29,42 @@ const CreateOutfit: FC = () => {
           </h2>
           <AccordionPanel pb={4}>
             <Stack direction="row">
-              <Image
-                boxSize="100px"
-                objectFit="cover"
-                src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                alt="Dan Abramov"
-              />
-              <Image
-                boxSize="100px"
-                objectFit="cover"
-                src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                alt="Dan Abramov"
-              />
-              <Image
-                boxSize="100px"
-                src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                alt="Dan Abramov"
-              />
+              <ResizableBox
+                width={100}
+                height={100}
+                minConstraints={[100, 100]}
+              >
+                <Image
+                  boxSize="100px"
+                  objectFit="cover"
+                  src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
+                  alt="Dan Abramov"
+                />
+              </ResizableBox>
+              <ResizableBox
+                width={100}
+                height={100}
+                minConstraints={[100, 100]}
+              >
+                <Image
+                  boxSize="100px"
+                  objectFit="cover"
+                  src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
+                  alt="Dan Abramov"
+                />
+              </ResizableBox>
+              <ResizableBox
+                width={100}
+                height={100}
+                minConstraints={[100, 100]}
+              >
+                <Image
+                  boxSize="100px"
+                  objectFit="cover"
+                  src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
+                  alt="Dan Abramov"
+                />
+              </ResizableBox>
             </Stack>
           </AccordionPanel>
         </AccordionItem>
