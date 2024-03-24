@@ -18,10 +18,6 @@ const CreateOutfit: FC = () => {
   const [middleImage, setMiddleImage] = useState<string>("");
   const [bottomImage, setBottomImage] = useState<string>("");
 
-  const [boxWidth, setBoxWidth] = useState<number>(300);
-  const [isResizing, setIsResizing] = useState(false);
-  const [resizeStartX, setResizeStartX] = useState(0);
-
   const handleTopImage = (image: string) => {
     setTopImage(image);
   };
@@ -34,44 +30,29 @@ const CreateOutfit: FC = () => {
     setBottomImage(image);
   };
 
-  const [size, setSize] = useState({ width: 200, height: 200 });
+  const [boxWidth, setBoxWidth] = React.useState(400);
+  const [boxHeight, setBoxHeight] = React.useState(400);
 
-  const handleMouseDown = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  const [topBoxWidth, setTopBoxWidth] = React.useState(400);
+  const [topBoxHeight, setTopBoxHeight] = React.useState(400);
+
+  const onResize = (
+    event: React.SyntheticEvent,
+    { size }: { size: { width: number; height: number } }
   ) => {
-    setIsResizing(true);
-    setResizeStartX(event.clientX);
+    // console.log("Resized:", size);
+    setBoxWidth(size.width);
+    setBoxHeight(size.height);
   };
 
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!isResizing) return;
-
-    const newWidth = boxWidth + event.clientX - resizeStartX;
-    if (newWidth >= 100 && newWidth <= 500) {
-      setBoxWidth(newWidth);
-      setResizeStartX(event.clientX);
-    }
+  const onMiddleResize = (
+    event: React.SyntheticEvent,
+    { size }: { size: { width: number; height: number } }
+  ) => {
+    // console.log("Resized:", size);
+    setTopBoxWidth(size.width);
+    setTopBoxHeight(size.height);
   };
-
-  const handleMouseUp = () => {
-    setIsResizing(false);
-  };
-
-  // Attach event listeners when resizing
-  React.useEffect(() => {
-    if (isResizing) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isResizing]);
 
   return (
     <>
@@ -87,73 +68,108 @@ const CreateOutfit: FC = () => {
           </h2>
           <AccordionPanel pb={4}>
             <Stack direction="row">
-              <ResizableBox
-                width={100}
-                height={100}
-                minConstraints={[100, 100]}
-              >
-                <Image
-                  id="1"
-                  boxSize="100px"
-                  objectFit="cover"
-                  src="https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
-                  alt="Dan Abramov"
-                  onClick={() =>
-                    handleTopImage(
-                      "https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
-                    )
-                  }
-                />
-              </ResizableBox>
-              <ResizableBox
-                width={100}
-                height={100}
-                minConstraints={[100, 100]}
-              >
-                <Image
-                  id="2"
-                  boxSize="100px"
-                  objectFit="cover"
-                  src="https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
-                  alt="Dan Abramov"
-                  onClick={() =>
-                    handleMiddleImage(
-                      "https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
-                    )
-                  }
-                />
-              </ResizableBox>
-              <ResizableBox
-                width={100}
-                height={100}
-                minConstraints={[100, 100]}
-              >
-                <Image
-                  id="3"
-                  boxSize="100px"
-                  objectFit="cover"
-                  src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                  alt="Dan Abramov"
-                  onClick={() =>
-                    handleBottomImage(
-                      "https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                    )
-                  }
-                />
-              </ResizableBox>
+              <Image
+                id="1"
+                boxSize="100px"
+                objectFit="cover"
+                src="https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
+                alt="Dan Abramov"
+                onClick={() =>
+                  handleTopImage(
+                    "https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
+                  )
+                }
+              />
+
+              <Image
+                id="2"
+                boxSize="100px"
+                objectFit="cover"
+                src="https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
+                alt="Dan Abramov"
+                onClick={() =>
+                  handleMiddleImage(
+                    "https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
+                  )
+                }
+              />
+
+              <Image
+                id="3"
+                boxSize="100px"
+                objectFit="cover"
+                src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
+                alt="Dan Abramov"
+                onClick={() =>
+                  handleBottomImage(
+                    "https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
+                  )
+                }
+              />
             </Stack>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <div style={{ maxWidth: "200px", display: "block" }}>
+      {/* <div style={{ maxWidth: "200px", display: "block" }}>
         {topImage && <img src={topImage} alt="" />}
         {middleImage && <img src={middleImage} alt="" />}
         {bottomImage && <img src={bottomImage} alt="" />}
+      </div> */}
+      <div>
+        <div>
+          <Resizable
+            width={boxWidth}
+            height={boxHeight}
+            minConstraints={[100, 100]}
+            // maxConstraints={[400, 400]}
+            onResize={onResize}
+          >
+            <div
+              style={{
+                width: boxWidth,
+                height: boxHeight,
+                marginLeft: "85px",
+              }}
+              className="resizable-box"
+            >
+              {topImage && (
+                <Image
+                  // boxSize="100px"
+                  // objectFit="cover"
+                  src={topImage}
+                  alt=""
+                />
+              )}
+            </div>
+          </Resizable>
+        </div>
       </div>
-      <div className="resizable-box" style={{ width: boxWidth }}>
-        <div className="resizable-content">Resizable Content</div>
-        <div className="resize-handle" onMouseDown={handleMouseDown}></div>
-      </div>
+
+      <Resizable
+        width={topBoxWidth}
+        height={topBoxHeight}
+        minConstraints={[100, 100]}
+        // maxConstraints={[400, 400]}
+        onResize={onMiddleResize}
+      >
+        <div
+          // style={{ width: boxWidth, height: boxHeight }}
+          style={{
+            width: topBoxWidth,
+            height: topBoxHeight,
+          }}
+          className="resizable-box"
+        >
+          {middleImage && (
+            <Image
+              // boxSize="100px"
+              // objectFit="cover"
+              src={middleImage}
+              alt=""
+            />
+          )}
+        </div>
+      </Resizable>
     </>
   );
 };
