@@ -7,6 +7,7 @@ interface AuthState {
   username: string;
   avatar: string;
   userId: string;
+  closetId: string;
   exp: number;
   logOut: () => void;
   logIn: (payload: any) => void;
@@ -17,6 +18,7 @@ const initialStateValues = {
   token: "",
   username: "",
   userId: "",
+  closetId: "",
   avatar: "",
   exp: 0,
 };
@@ -34,10 +36,11 @@ export const authStore = create<AuthState>()(
         logIn: (payload: any) =>
           set({
             isLoggedIn: true,
+            username: payload.username,
             token: payload.token,
-            username: payload.firstname + " " + payload.lastname,
             avatar: payload?.avatar,
             userId: payload.userId,
+            closetId: payload.closetId,
             exp: payload.exp,
           }),
         updateProfile: (payload: any) =>

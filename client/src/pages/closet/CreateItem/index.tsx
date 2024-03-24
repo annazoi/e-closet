@@ -1,6 +1,9 @@
 import { Select } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
+import { addPhoto } from "../../../services/closet";
+import { useMutation } from "react-query";
+import { useParams } from "react-router-dom";
 
 const Seasons = [
   {
@@ -71,6 +74,13 @@ const WomanCategories = [
 
 const CreateItem: FC = () => {
   const [image, setImage] = useState<string>("");
+  const { closetId } = useParams<{ closetId: string }>();
+
+  const { mutate: addPhotoMutation } = useMutation(() =>
+    addPhoto(closetId || "", image)
+  );
+
+  console.log(closetId);
   return (
     <>
       <div style={{ display: "grid", gap: "35px" }}>

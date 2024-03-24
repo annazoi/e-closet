@@ -17,7 +17,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/closet" element={<Closet />} />
+            <Route path="/closet/:closetId" element={<Closet />} />
             <Route path="/closet/create-outfit" element={<CreateOutfit />} />
           </Routes>
         </NavigationBar>

@@ -1,15 +1,25 @@
 import { Box, ButtonGroup, useDisclosure } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Button from "../../components/ui/Button";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import Modal from "../../components/ui/Modal";
 import CreateItem from "./CreateItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getCloset } from "../../services/closet";
 
 const Closet: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [closet, setCloset] = useState<any>(null);
+
+  const { closetId } = useParams<{ closetId: string }>();
+
+  const { data } = useQuery("closet", () => getCloset(closetId || ""));
+
+  // console.log(data);
+
   return (
     <Box
       // border={"1px solid red"}

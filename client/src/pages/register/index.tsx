@@ -9,6 +9,7 @@ import Button from "../../components/ui/Button";
 import { signUp } from "../../services/auth";
 import { useMutation } from "react-query";
 import { authStore } from "../../store/authStore";
+import { createCloset } from "../../services/closet";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);

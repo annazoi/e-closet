@@ -40,6 +40,13 @@ export class User {
   })
   @Prop()
   password: string;
+
+  @ApiProperty({
+    description: 'The closetId of the user',
+    format: 'string',
+  })
+  @Prop({ type: Types.ObjectId, ref: 'Closet' })
+  closetId?: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

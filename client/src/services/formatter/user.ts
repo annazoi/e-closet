@@ -10,6 +10,7 @@ export const formatUser = (data: any): User | null => {
       email: data.email,
       age: data.age,
       avatar: data.avatar,
+      closetId: data.closetId,
     };
   }
 };
