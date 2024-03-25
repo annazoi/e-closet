@@ -80,15 +80,25 @@ interface CreateItemProps {
 }
 
 const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<any[]>([]);
 
-  const { mutate: addPhotoMutate } = useMutation((images: any) =>
-    addPhotos({ closetId, images })
+  const { mutate: addPhotoMutate } = useMutation(
+    (images: any[]) => addPhotos({ closetId, images }),
+    {
+      onSuccess: () => {
+        onClose();
+      },
+    }
   );
 
   const handleImage = () => {
     try {
-      addPhotoMutate(image);
+      addPhotoMutate(
+        image.map((img) => {
+          return { file: img.file };
+        })
+      );
+      console.log(image);
     } catch (error) {
       console.log(error);
     }
@@ -119,7 +129,7 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
                 </option>
               ))}
             </Select>
-            <ImagePicker image={image} setImage={setImage} />
+            <ImagePicker images={image} setImage={setImage} />
           </div>
         </ModalBody>
       </Modal>

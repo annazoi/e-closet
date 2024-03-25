@@ -5,14 +5,40 @@ import { GrGallery } from "react-icons/gr";
 import { FaCamera } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { useColorModeValue } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
+import {
+  ImagePickerFile,
+  ImagePickerItemData,
+} from "../../../interfaces/components";
 
 interface ImagePickerProps {
-  setImage: (image: string) => void;
-  image: string;
+  setImage?: (image: any[]) => void;
+  images?: Image[];
+  image?: any;
   cancelImage?: () => void;
+  label?: string;
+  multiple?: boolean;
+  onChange?: (data: ImagePickerItemData) => void;
+  onImageDelete?: (data: string) => void;
 }
 
-const ImagePicker = ({ setImage, image, cancelImage }: ImagePickerProps) => {
+interface Image {
+  id: string;
+  file: string;
+}
+
+const ImagePicker: FC<ImagePickerProps> = ({
+  setImage,
+  images,
+  cancelImage,
+}) => {
+  const [filteredImages, setFilteredImages] = useState<Image[]>([]);
+  const [selectedImages, setSelectedImages] = useState<ImagePickerFile[]>([]);
+
+  useEffect(() => {
+    setFilteredImages(images || []);
+  }, [images]);
+
   const handleGallery = async () => {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -23,7 +49,9 @@ const ImagePicker = ({ setImage, image, cancelImage }: ImagePickerProps) => {
 
     let imageUrl = image.dataUrl;
 
-    setImage(imageUrl || "");
+    setFilteredImages([...filteredImages, { id: "", file: imageUrl || "" }]);
+
+    // console.log(imageUrl);
 
     return imageUrl;
   };
@@ -38,7 +66,7 @@ const ImagePicker = ({ setImage, image, cancelImage }: ImagePickerProps) => {
 
     let imageUrl = image.dataUrl;
 
-    setImage(imageUrl || "");
+    setFilteredImages([...filteredImages, { id: "", file: imageUrl || "" }]);
 
     return imageUrl;
   };
@@ -59,21 +87,35 @@ const ImagePicker = ({ setImage, image, cancelImage }: ImagePickerProps) => {
           rightIcon={<FaCamera />}
         ></Button>
       </div>
-      {image && (
-        <div style={{ display: "flex" }}>
-          <img
-            src={image}
-            alt=""
-            style={{
-              border: "1px solid pink",
-              borderRadius: "50%",
-              width: "50px",
-              height: "50px",
-              marginLeft: "10px",
-              // backgroundColor: "pink",
-              position: "relative",
-            }}
-          />
+      {filteredImages.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginTop: "10px",
+            marginLeft: "10px",
+          }}
+        >
+          {filteredImages.map((image, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                position: "relative",
+                gap: "10px",
+              }}
+            >
+              <img
+                src={image.file}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "10px",
+                }}
+              ></img>
+            </div>
+          ))}
           {cancelImage && (
             <MdCancel
               style={{

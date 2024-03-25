@@ -35,8 +35,20 @@ export const addPhotos = async (payload: AddImages) => {
     const { closetId, images } = payload;
     const response = await axios.post(
       `${API_URL}/closet/${closetId}/images`,
-      images,
+      { images },
       getHeaders()
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const deleteImage = async (closetId: string, imageId: string) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/closet/${closetId}/images/${imageId}`,
+      getAuthHeaders()
     );
     return response.data;
   } catch (error: any) {
@@ -57,15 +69,3 @@ export const addPhotos = async (payload: AddImages) => {
 //     throw error.response.data;
 //   }
 // };
-
-export const deleteImage = async (closetId: string, imageId: string) => {
-  try {
-    const response = await axios.delete(
-      `${API_URL}/closet/${closetId}/images/${imageId}`,
-      getAuthHeaders()
-    );
-    return response.data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
-};

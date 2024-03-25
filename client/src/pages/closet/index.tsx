@@ -17,7 +17,7 @@ const Closet: FC = () => {
 
   const { data } = useQuery("closet", () => getCloset(closetId || ""));
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <Box
@@ -43,13 +43,7 @@ const Closet: FC = () => {
         ></Button>
       </ButtonGroup>
 
-      {/* <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        title="Create an item from your closet"
-      > */}
       <CreateItem closetId={data?.[0]._id} isOpen={isOpen} onClose={onClose} />
-      {/* </Modal> */}
     </Box>
   );
 };

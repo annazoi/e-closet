@@ -9,6 +9,7 @@ import {
   UploadedFile,
   ParseFilePipe,
   Req,
+  UploadedFiles,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
@@ -32,6 +33,7 @@ export class AuthController {
     @Req() req: Express.Request,
     @Body() dto: SignUpDto,
     @Body() createClosetDto: CreateClosetDto,
+    @UploadedFiles() closetFiles: Array<Express.Multer.File>,
     @UploadedFile(
       new ParseFilePipe({
         fileIsRequired: false,
@@ -40,8 +42,8 @@ export class AuthController {
     )
     file: Express.Multer.File | undefined,
   ): Promise<any> {
-    const { userId } = req.user;
-    return this.authService.signup(dto, file, createClosetDto);
+    // Call the signup method of AuthService passing additional parameters
+    return this.authService.signup(dto, file, createClosetDto, closetFiles);
   }
 
   @HttpCode(HttpStatus.OK)
