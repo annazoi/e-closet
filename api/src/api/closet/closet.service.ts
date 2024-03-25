@@ -20,20 +20,20 @@ export class ClosetService {
   async create(
     userId: string,
     createClosetDto: CreateClosetDto,
-    files: Express.Multer.File[],
+    // files: Express.Multer.File[],
   ) {
     try {
-      const images = [];
-      for (let i = 0; i < files?.length; i++) {
-        const uploadedFileUrl = await this.s3Service.uploadFile(files[i]);
-        images.push({
-          file: uploadedFileUrl,
-        });
-      }
+      // const images = [];
+      // for (let i = 0; i < files?.length; i++) {
+      //   const uploadedFileUrl = await this.s3Service.uploadFile(files[i]);
+      //   images.push({
+      //     file: uploadedFileUrl,
+      //   });
+      // }
 
       const closet = new this.closetModel({
         ...createClosetDto,
-        images,
+        // images,
         userId,
       });
 

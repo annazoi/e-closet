@@ -8,7 +8,6 @@ import {
   HttpStatus,
   UploadedFile,
   ParseFilePipe,
-  Req,
   UploadedFiles,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -18,7 +17,6 @@ import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/schemas/user.schema';
 import { CreateClosetDto } from '../closet/dto/create-closet.dto';
-import { Closet } from 'src/schemas/closet.schema';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -30,7 +28,6 @@ export class AuthController {
   @ApiOkResponse({ type: User })
   @HttpCode(HttpStatus.CREATED)
   async signup(
-    @Req() req: Express.Request,
     @Body() dto: SignUpDto,
     @Body() createClosetDto: CreateClosetDto,
     @UploadedFiles() closetFiles: Array<Express.Multer.File>,
@@ -42,8 +39,7 @@ export class AuthController {
     )
     file: Express.Multer.File | undefined,
   ): Promise<any> {
-    // Call the signup method of AuthService passing additional parameters
-    return this.authService.signup(dto, file, createClosetDto, closetFiles);
+    return this.authService.signup(dto, file, createClosetDto);
   }
 
   @HttpCode(HttpStatus.OK)

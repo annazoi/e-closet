@@ -25,20 +25,20 @@ import { Closet } from 'src/schemas/closet.schema';
 export class ClosetController {
   constructor(private readonly closetService: ClosetService) {}
 
-  @UseGuards(JwtGuard)
-  @Post()
-  @UseInterceptors(AnyFilesInterceptor())
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Closet })
-  async create(
-    @Req() req: Express.Request,
-    @Body() createClosetDto: CreateClosetDto,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-  ) {
-    const { userId } = req.user;
+  // @UseGuards(JwtGuard)
+  // @Post()
+  // @UseInterceptors(AnyFilesInterceptor())
+  // @ApiBearerAuth()
+  // @ApiOkResponse({ type: Closet })
+  // async create(
+  //   @Req() req: Express.Request,
+  //   @Body() createClosetDto: CreateClosetDto,
+  //   @UploadedFiles() files: Array<Express.Multer.File>,
+  // ) {
+  //   const { userId } = req.user;
 
-    return this.closetService.create(userId, createClosetDto, files);
-  }
+  //   return this.closetService.create(userId, createClosetDto, files);
+  // }
 
   @Get()
   @ApiOkResponse({ type: Closet })
