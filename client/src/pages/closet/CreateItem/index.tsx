@@ -1,9 +1,10 @@
-import { Select } from "@chakra-ui/react";
+import { ModalBody, Select, useDisclosure } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
-import { addPhoto } from "../../../services/closet";
+import { addPhotos } from "../../../services/closet";
 import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
+import Modal from "../../../components/ui/Modal";
 
 const Seasons = [
   {
@@ -72,34 +73,56 @@ const WomanCategories = [
   },
 ];
 
-const CreateItem: FC = () => {
-  const [image, setImage] = useState<string>("");
-  const { closetId } = useParams<{ closetId: string }>();
+interface CreateItemProps {
+  closetId: string;
+  isOpen: any;
+  onClose: any;
+}
 
-  const { mutate: addPhotoMutation } = useMutation(() =>
-    addPhoto(closetId || "", image)
+const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
+  const [image, setImage] = useState<string>("");
+
+  const { mutate: addPhotoMutate } = useMutation((images: any) =>
+    addPhotos({ closetId, images })
   );
 
-  console.log(closetId);
+  const handleImage = () => {
+    try {
+      addPhotoMutate(image);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // console.log(closetId);
   return (
     <>
-      <div style={{ display: "grid", gap: "35px" }}>
-        <Select placeholder="Select Season">
-          {Seasons.map((season: any) => (
-            <option key={season.id} value={season.name}>
-              {season.name}
-            </option>
-          ))}
-        </Select>
-        <Select placeholder="Select Category">
-          {WomanCategories.map((category: any) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </Select>
-        <ImagePicker image={image} setImage={setImage} />
-      </div>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Create an item from your closet"
+        onClick={handleImage}
+      >
+        <ModalBody pb={6}>
+          <div style={{ display: "grid", gap: "35px" }}>
+            <Select placeholder="Select Season">
+              {Seasons.map((season: any) => (
+                <option key={season.id} value={season.name}>
+                  {season.name}
+                </option>
+              ))}
+            </Select>
+            <Select placeholder="Select Category">
+              {WomanCategories.map((category: any) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
+            <ImagePicker image={image} setImage={setImage} />
+          </div>
+        </ModalBody>
+      </Modal>
     </>
   );
 };

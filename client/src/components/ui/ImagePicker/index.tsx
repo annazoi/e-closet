@@ -9,9 +9,10 @@ import { useColorModeValue } from "@chakra-ui/react";
 interface ImagePickerProps {
   setImage: (image: string) => void;
   image: string;
+  cancelImage?: () => void;
 }
 
-const ImagePicker = ({ setImage, image }: ImagePickerProps) => {
+const ImagePicker = ({ setImage, image, cancelImage }: ImagePickerProps) => {
   const handleGallery = async () => {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -68,19 +69,22 @@ const ImagePicker = ({ setImage, image }: ImagePickerProps) => {
               borderRadius: "50%",
               width: "50px",
               height: "50px",
+              marginLeft: "10px",
               // backgroundColor: "pink",
               position: "relative",
             }}
           />
-          <MdCancel
-            style={{
-              width: "25px",
-              height: "25px",
-              position: "absolute",
-              marginLeft: "30px",
-              color: useColorModeValue("pink", "white"),
-            }}
-          ></MdCancel>
+          {cancelImage && (
+            <MdCancel
+              style={{
+                width: "25px",
+                height: "25px",
+                position: "absolute",
+                marginLeft: "30px",
+                color: useColorModeValue("pink", "white"),
+              }}
+            ></MdCancel>
+          )}
         </div>
       )}
     </>

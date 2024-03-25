@@ -55,8 +55,19 @@ export class ClosetController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Closet })
-  update(@Param('id') id: string, @Body() updateMeetDto: UpdateClosetDto) {
-    return this.closetService.update(id, updateMeetDto);
+  update(@Param('id') id: string, @Body() updateClosetDto: UpdateClosetDto) {
+    return this.closetService.update(id, updateClosetDto);
+  }
+
+  @Delete(':closetId/images/:imageId')
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: Closet })
+  async deleteImage(
+    @Param('closetId') closetId: string,
+    @Param('imageId') imageId: string,
+  ) {
+    return this.closetService.deleteImage(closetId, imageId);
   }
 
   @UseGuards(JwtGuard)
@@ -65,9 +76,20 @@ export class ClosetController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: Closet })
   async addImages(
-    @Param('id') meetId: string,
+    @Param('id') closetId: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    return this.closetService.addImages(meetId, files);
+    return this.closetService.addImages(closetId, files);
   }
+
+  // @Patch('/:id/images')
+  // @UseGuards(JwtGuard)
+  // @ApiBearerAuth()
+  // @ApiOkResponse({ type: Closet })
+  // async removeImages(
+  //   @Param('id') closetId: string,
+  //   @Body() body: RemoveImagesDto,
+  // ) {
+  //   return this.closetService.removeImages(closetId, body.images);
+  // }
 }

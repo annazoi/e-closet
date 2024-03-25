@@ -7,20 +7,30 @@ import { SignInDto, SignUpDto } from './dto';
 import * as argon from 'argon2';
 import { Model, Error } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
+import { Closet } from 'src/schemas/closet.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { S3Service } from 'src/aws-s3/aws-s3.service';
 import { CreateJwtService } from './jwt/jwt.service';
+import { CreateClosetDto } from '../closet/dto/create-closet.dto';
+import { ClosetService } from '../closet/closet.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<User>,
+    @InjectModel(Closet.name)
+    private closetModel: Model<Closet>,
     private s3Service: S3Service,
     private jwt: CreateJwtService,
+    private closetService: ClosetService,
   ) {}
 
-  async signup(dto: SignUpDto, file: Express.Multer.File | undefined) {
+  async signup(
+    dto: SignUpDto,
+    file: Express.Multer.File | undefined,
+    createClosetDto: CreateClosetDto,
+  ) {
     const existingUser = await this.userModel.findOne({
       email: dto.email,
     });
@@ -44,6 +54,12 @@ export class AuthService {
       });
       await user.save();
 
+      const closet = await this.closetService.create(
+        user.id,
+        createClosetDto,
+        [],
+      );
+
       const token = await this.jwt.signToken({
         userId: user.id,
       });
@@ -53,6 +69,8 @@ export class AuthService {
       return {
         token,
         user: rest,
+        // closet: closet.toJSON(),
+        closet,
       };
     } catch (error) {
       if (error instanceof Error.ValidationError) {

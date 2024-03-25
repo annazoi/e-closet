@@ -6,6 +6,8 @@ import { IoMdSettings, IoMdLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useColorModeValue } from "@chakra-ui/react";
 import { authStore } from "../../../store/authStore";
+import { GrContact } from "react-icons/gr";
+import { IoInformationCircleSharp } from "react-icons/io5";
 export const isLoggedInLinks: any = [
   {
     id: 1,
@@ -45,13 +47,13 @@ const isLogOutLinks: any = [
     id: 1,
     name: "About Us",
     path: "/about",
-    icon: <FaHome />,
+    icon: <IoInformationCircleSharp size={23} />,
   },
   {
     id: 2,
     name: "Contact",
     path: "/contact",
-    icon: <BiCloset />,
+    icon: <GrContact />,
   },
 ];
 

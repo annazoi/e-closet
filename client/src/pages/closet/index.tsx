@@ -12,13 +12,12 @@ import { getCloset } from "../../services/closet";
 const Closet: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
-  const [closet, setCloset] = useState<any>(null);
 
   const { closetId } = useParams<{ closetId: string }>();
 
   const { data } = useQuery("closet", () => getCloset(closetId || ""));
 
-  // console.log(data);
+  console.log(data);
 
   return (
     <Box
@@ -44,13 +43,13 @@ const Closet: FC = () => {
         ></Button>
       </ButtonGroup>
 
-      <Modal
+      {/* <Modal
         isOpen={isOpen}
         onClose={onClose}
         title="Create an item from your closet"
-      >
-        <CreateItem />
-      </Modal>
+      > */}
+      <CreateItem closetId={data?.[0]._id} isOpen={isOpen} onClose={onClose} />
+      {/* </Modal> */}
     </Box>
   );
 };

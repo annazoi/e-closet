@@ -6,6 +6,12 @@ import { Types } from 'mongoose';
 export class Image {
   @Prop()
   file: string;
+
+  @Prop()
+  type?: string;
+
+  @Prop()
+  season?: string[];
 }
 const ImageSchema = SchemaFactory.createForClass(Image);
 
@@ -22,7 +28,6 @@ export class Closet {
   })
   @Prop({
     type: [ImageSchema],
-    required: true,
   })
   images: Image[];
 }

@@ -91,6 +91,30 @@ export class ClosetService {
     }
   }
 
+  async deleteImage(closetId: string, imageId: string) {
+    try {
+      const closet = await this.closetModel.findById(closetId);
+      if (!closet) {
+        throw new NotFoundException('No closet found');
+      }
+
+      const updatedImages = closet.images.filter(
+        (image: any) => image._id.toString() !== imageId,
+      );
+
+      closet.images = updatedImages;
+
+      await closet.save();
+
+      return closet.populate('userId', '-password');
+    } catch (error) {
+      if (error instanceof Error.ValidationError) {
+        throw new ForbiddenException(error.message);
+      }
+      throw error;
+    }
+  }
+
   async addImages(id: string, files: Express.Multer.File[]) {
     try {
       const closet = await this.closetModel.findById(id);
@@ -119,3 +143,25 @@ export class ClosetService {
     }
   }
 }
+
+// async removeImages(closetId: string, images: string[]) {
+//   try {
+//     const closet = await this.closetModel.findById(closetId);
+//     if (!closet) {
+//       throw new NotFoundException('No closet found');
+//     }
+
+//     const updatedImages = closet.images.filter(
+//       (image: any) => !images.includes(image._id.toString()),
+//     );
+
+//     closet.images = updatedImages;
+
+//     return closet.populate('userId', '-password');
+//   } catch (error) {
+//     if (error instanceof Error.ValidationError) {
+//       throw new ForbiddenException(error.message);
+//     }
+//     throw error;
+//   }
+// }
