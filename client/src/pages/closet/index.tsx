@@ -3,7 +3,6 @@ import { FC, useState } from "react";
 import Button from "../../components/ui/Button";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
-import Modal from "../../components/ui/Modal";
 import CreateItem from "./CreateItem";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";

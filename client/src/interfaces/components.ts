@@ -1,18 +1,4 @@
-export interface MultiFilePickerItemData {
-  name: string;
-  file: File;
-}
-
-export interface ImagePickerFile {
+export interface Image {
   id: string;
-  file: File;
-}
-
-export interface ImagePickerItemData {
-  name: string;
-  files: ImagePickerFile[];
-}
-export interface FilePicker {
-  name: string;
   file: File;
 }

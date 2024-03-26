@@ -6,10 +6,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Wrap,
+  WrapItem,
+  useToast,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Button from "../Button";
-// import Input from "../Input";
 import { FC } from "react";
 
 type ModalProps = {
@@ -19,9 +21,11 @@ type ModalProps = {
   onClose?: () => void;
   onAction?: () => void;
   actionTitle?: string;
-  onClick?: () => void;
+  onClick?: any;
   closeTitle?: string;
   actionTitleLoading?: boolean;
+  isLoading?: boolean;
+  alert?: boolean;
 } & React.ComponentProps<typeof ChakraModal>;
 
 const Modal: FC<ModalProps> = ({
@@ -29,6 +33,8 @@ const Modal: FC<ModalProps> = ({
   onClose,
   onClick,
   title,
+  isLoading,
+  alert,
   ...rest
 }) => {
   return (
@@ -44,15 +50,6 @@ const Modal: FC<ModalProps> = ({
         <ModalCloseButton />
         {/* <ModalBody pb={6}>{rest.children}</ModalBody> */}
         {rest.children}
-
-        <ModalFooter>
-          <Button mr={3} name="Save" onClick={onClick}></Button>
-          <Button
-            onClick={onClose}
-            name="Cancel"
-            color={useColorModeValue("gray.300", "gray.700")}
-          ></Button>
-        </ModalFooter>
       </ModalContent>
     </ChakraModal>
   );

@@ -30,7 +30,6 @@ export class AuthService {
     dto: SignUpDto,
     file: Express.Multer.File | undefined,
     createClosetDto: CreateClosetDto,
-    // closetFiles: Express.Multer.File[],
   ) {
     const existingUser = await this.userModel.findOne({
       email: dto.email,
@@ -61,11 +60,7 @@ export class AuthService {
 
       const { password, ...rest } = user.toJSON();
 
-      const closet = await this.closetService.create(
-        user.id,
-        createClosetDto,
-        // closetFiles,
-      );
+      const closet = await this.closetService.create(user.id, createClosetDto);
 
       return {
         token,

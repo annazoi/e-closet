@@ -1,135 +1,100 @@
+import { useRef, useState, useEffect } from "react";
 import "./style.css";
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import Button from "../Button";
-import { GrGallery } from "react-icons/gr";
-import { FaCamera } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import { useColorModeValue } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
-import {
-  ImagePickerFile,
-  ImagePickerItemData,
-} from "../../../interfaces/components";
+
+import { Image } from "../../../interfaces/components";
 
 interface ImagePickerProps {
-  setImage?: (image: any[]) => void;
-  images?: Image[];
-  image?: any;
-  cancelImage?: () => void;
-  label?: string;
-  multiple?: boolean;
-  onChange?: (data: ImagePickerItemData) => void;
-  onImageDelete?: (data: string) => void;
+  name?: string;
+  onChange: (image: Image) => void;
+  value?: Image;
+  text?: any;
+  register?: any;
+  removeImage?: boolean;
 }
 
-interface Image {
-  id: string;
-  file: string;
-}
-
-const ImagePicker: FC<ImagePickerProps> = ({
-  setImage,
-  images,
-  cancelImage,
-}) => {
-  const [filteredImages, setFilteredImages] = useState<Image[]>([]);
-  const [selectedImages, setSelectedImages] = useState<ImagePickerFile[]>([]);
+const ImagePicker = ({
+  name,
+  onChange,
+  value,
+  removeImage,
+}: ImagePickerProps) => {
+  const imageRef: any = useRef(null);
+  const [image, setImage] = useState<Image | null>(null);
 
   useEffect(() => {
-    setFilteredImages(images || []);
-  }, [images]);
+    setImage(value || null);
+  }, [value]);
 
-  const handleGallery = async () => {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Photos,
-    });
-
-    let imageUrl = image.dataUrl;
-
-    setFilteredImages([...filteredImages, { id: "", file: imageUrl || "" }]);
-
-    // console.log(imageUrl);
-
-    return imageUrl;
+  const handleImageClick = () => {
+    imageRef.current.click();
   };
 
-  const handleCamera = async () => {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
-    });
-
-    let imageUrl = image.dataUrl;
-
-    setFilteredImages([...filteredImages, { id: "", file: imageUrl || "" }]);
-
-    return imageUrl;
+  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const newImage: Image = {
+        id: value?.id || "",
+        file: file,
+      };
+      setImage(newImage);
+      onChange(newImage);
+    }
   };
+
   return (
-    <>
-      <div>
-        <Button
-          onClick={handleGallery}
-          w={"40%"}
-          name="Add Photo"
-          rightIcon={<GrGallery />}
-          mr={2}
-        ></Button>
-        <Button
-          onClick={handleCamera}
-          w={"40%"}
-          name="Take Photo"
-          rightIcon={<FaCamera />}
-        ></Button>
-      </div>
-      {filteredImages.length > 0 && (
+    <div>
+      <input
+        type="file"
+        className="image-input"
+        name={name}
+        onChange={handleImage}
+        accept="image/x-png,image/gif,image/jpeg, image/jpg, image/png"
+        ref={imageRef}
+      />
+      {image && (
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "10px",
-            marginTop: "10px",
-            marginLeft: "10px",
+            marginTop: "30px",
           }}
         >
-          {filteredImages.map((image, index) => (
-            <div
-              key={index}
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+              gap: "10px",
+            }}
+          >
+            <img
+              onClick={handleImageClick}
               style={{
-                display: "flex",
-                position: "relative",
-                gap: "10px",
+                width: "100px",
+                height: "100px",
+                borderRadius: "10px",
               }}
-            >
-              <img
-                src={image.file}
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  borderRadius: "10px",
-                }}
-              ></img>
-            </div>
-          ))}
-          {cancelImage && (
+              src={URL.createObjectURL(image.file)}
+              alt={name}
+            />
+          </div>
+          {removeImage && (
             <MdCancel
               style={{
+                position: "absolute",
                 width: "25px",
                 height: "25px",
-                position: "absolute",
-                marginLeft: "30px",
-                color: useColorModeValue("pink", "white"),
+                marginLeft: "85px",
+                marginTop: "-8px",
+                cursor: "pointer",
+                color: "red",
               }}
             ></MdCancel>
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

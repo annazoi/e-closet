@@ -30,7 +30,7 @@ export const getCloset = async (closetId: string) => {
   }
 };
 
-export const addPhotos = async (payload: AddImages) => {
+export const addPhotos = async (payload: any) => {
   try {
     const { closetId, images } = payload;
     const response = await axios.post(
