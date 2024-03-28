@@ -12,11 +12,28 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import "./style.css";
+import { useQuery } from "react-query";
+import { getCloset } from "../../../services/closet";
+import { authStore } from "../../../store/authStore";
 
-const CreateOutfit: FC = () => {
+interface CreateOutfitProps {
+  closetId?: string;
+}
+
+const CreateOutfit: FC<CreateOutfitProps> = () => {
   const [topImage, setTopImage] = useState<string>("");
   const [middleImage, setMiddleImage] = useState<string>("");
   const [bottomImage, setBottomImage] = useState<string>("");
+  const { userId, closetId } = authStore((state) => state);
+
+  const { data } = useQuery({
+    queryKey: ["closet", closetId],
+    queryFn: () => {
+      return getCloset(closetId);
+    },
+  });
+
+  // console.log(data);
 
   const handleTopImage = (image: string) => {
     setTopImage(image);
@@ -68,53 +85,21 @@ const CreateOutfit: FC = () => {
           </h2>
           <AccordionPanel pb={4}>
             <Stack direction="row">
-              <Image
-                id="1"
-                boxSize="100px"
-                objectFit="cover"
-                src="https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
-                alt="Dan Abramov"
-                onClick={() =>
-                  handleTopImage(
-                    "https://www.hudsonwellesley.com/cdn/shop/products/Black_Tee_Front_1024x1024@2x.png?v=1582411399"
-                  )
-                }
-              />
-
-              <Image
-                id="2"
-                boxSize="100px"
-                objectFit="cover"
-                src="https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
-                alt="Dan Abramov"
-                onClick={() =>
-                  handleMiddleImage(
-                    "https://www.instyle.com/thmb/UsRvtB37F50xeHWJijFQ0bzx3SI=/fit-in/1500x1000/filters:no_upscale():max_bytes(150000):strip_icc()/Abercrombie--Fitch-Curve-Love-Ultra-High-Rise-Stretch-Flare-Jean-04ed307e5ecf492d86935eb9d544d022.jpg"
-                  )
-                }
-              />
-
-              <Image
-                id="3"
-                boxSize="100px"
-                objectFit="cover"
-                src="https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                alt="Dan Abramov"
-                onClick={() =>
-                  handleBottomImage(
-                    "https://variety.com/wp-content/uploads/2021/04/Avatar.jpg"
-                  )
-                }
-              />
+              {data?.images.map((image: any) => (
+                <Image
+                  id="3"
+                  boxSize="100px"
+                  objectFit="cover"
+                  src={image.file}
+                  alt="Dan Abramov"
+                  onClick={() => handleTopImage(image.file)}
+                />
+              ))}
             </Stack>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      {/* <div style={{ maxWidth: "200px", display: "block" }}>
-        {topImage && <img src={topImage} alt="" />}
-        {middleImage && <img src={middleImage} alt="" />}
-        {bottomImage && <img src={bottomImage} alt="" />}
-      </div> */}
+
       <div>
         <div>
           <Resizable

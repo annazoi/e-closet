@@ -7,21 +7,24 @@ import Home from "./pages/home";
 import Closet from "./pages/closet";
 import CreateOutfit from "./pages/closet/CreateOutfit";
 import About from "./pages/about";
+import { authStore } from "./store/authStore";
 
 function App() {
+  const { isLoggedIn } = authStore((state) => state);
   return (
     <>
       <BrowserRouter>
         <NavigationBar>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/home" element={<Home />} />
-            {/* <Route path="/closet/:closetId" element={<Closet />} /> */}
-            <Route path="/closet" element={<Closet />} />
-            <Route path="/closet/create-outfit" element={<CreateOutfit />} />
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/closet" element={<Closet />} />
+              <Route path="/closet/create-outfit" element={<CreateOutfit />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+            </>
           </Routes>
         </NavigationBar>
       </BrowserRouter>

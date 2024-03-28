@@ -33,6 +33,7 @@ const Login: FC = () => {
           token: data.token,
           exp: data.exp,
           userId: data.user._id,
+          closetId: data.closet._id,
         });
         console.log("data", data);
         reset();

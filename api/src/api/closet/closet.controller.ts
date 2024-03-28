@@ -42,7 +42,7 @@ export class ClosetController {
 
   @Get()
   @ApiOkResponse({ type: Closet })
-  async findAll(@Query() query: any) {
+  async findAll(@Query() query: any, @Req() req: Express.Request) {
     return this.closetService.findAll(query);
   }
 

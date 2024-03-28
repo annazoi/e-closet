@@ -4,18 +4,20 @@ import Button from "../../components/ui/Button";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import CreateItem from "./CreateItem";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getCloset } from "../../services/closet";
+import { authStore } from "../../store/authStore";
 
 const Closet: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const { userId } = authStore((state) => state);
+  const [yourCloset, setYourCloset] = useState<any>([]);
 
-  const { closetId } = useParams<{ closetId: string }>();
+  const { closetId } = authStore((state) => state);
 
-  const { data } = useQuery("closet", () => getCloset(closetId || ""));
-
+  // const { data } = useQuery("closet", () => getCloset(closetId));
   // console.log(data);
 
   return (
@@ -38,11 +40,11 @@ const Closet: FC = () => {
         <Button
           name="Create Outfit"
           rightIcon={<GiClothes />}
-          onClick={() => navigate("/closet/create-outfit")}
+          onClick={() => navigate(`/closet/create-outfit`)}
         ></Button>
       </ButtonGroup>
 
-      <CreateItem closetId={data?.[0]._id} isOpen={isOpen} onClose={onClose} />
+      <CreateItem closetId={closetId} isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

@@ -1,4 +1,5 @@
-import { IsArray, IsOptional } from 'class-validator';
+import { Image } from './../../../../../client/src/interfaces/components';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class CreateClosetDto {
   @IsOptional()
@@ -8,3 +9,16 @@ export class RemoveImagesDto {
   @IsArray()
   images: string[];
 }
+
+// export class ImageDto {
+//   @IsArray()
+//   image: Image;
+
+//   @IsString()
+//   @IsOptional()
+//   type: string;
+
+//   @IsArray()
+//   @IsOptional()
+//   season: string[];
+// }

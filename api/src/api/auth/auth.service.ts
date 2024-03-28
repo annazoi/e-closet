@@ -54,14 +54,14 @@ export class AuthService {
       });
       await user.save();
 
-      const token = await this.jwt.signToken({
-        userId: user._id,
-      });
-
       const { password, ...rest } = user.toJSON();
 
       const closet = await this.closetService.create(user.id, createClosetDto);
 
+      const token = await this.jwt.signToken({
+        userId: user._id,
+        closetId: closet._id,
+      });
       return {
         token,
         user: rest,
@@ -92,6 +92,7 @@ export class AuthService {
 
     const token = await this.jwt.signToken({
       userId: user.id,
+      // closetId: user.closetId,
     });
 
     const { password, ...rest } = user.toJSON();
