@@ -6,45 +6,21 @@ import { ApiProperty } from '@nestjs/swagger';
   timestamps: true,
 })
 export class User {
-  @ApiProperty({
-    description: 'The username of the user',
-    format: 'string',
-  })
   @Prop()
   username: string;
 
-  @ApiProperty({
-    description: 'The email of the user',
-    format: 'string',
-  })
   @Prop()
   email: string;
 
-  @ApiProperty({
-    description: 'The age of the user',
-    format: 'number',
-  })
   @Prop()
   age?: number;
 
-  @ApiProperty({
-    description: 'the avatar of the user',
-    format: 'string',
-  })
   @Prop()
   avatar?: string;
 
-  @ApiProperty({
-    description: 'The password of the user',
-    format: 'string',
-  })
   @Prop()
   password: string;
 
-  @ApiProperty({
-    description: 'The closetId of the user',
-    format: 'string',
-  })
   @Prop({ type: Types.ObjectId, ref: 'Closet' })
   closetId?: Types.ObjectId;
 }

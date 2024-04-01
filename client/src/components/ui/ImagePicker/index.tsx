@@ -33,6 +33,7 @@ const ImagePicker = ({
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+      console.log(file);
       const newImage: Image = {
         id: value?.id || "",
         file: file,

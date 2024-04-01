@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
-import { addPhotos } from "../../../services/closet";
+import { addClothes } from "../../../services/closet";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
 import { Image } from "../../../interfaces/components";
@@ -36,7 +36,7 @@ const Seasons = [
   },
 ];
 
-const WomanCategories = [
+const type = [
   {
     id: 1,
     name: "Tops & T-shirts",
@@ -81,7 +81,8 @@ interface CreateItemProps {
 
 const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
   const [selectedImages, setSelectedImages] = useState<Image[]>([]);
-  const [alert, setAlert] = useState(false);
+  const [season, setSeason] = useState<any[]>([]);
+  const [category, setCategory] = useState("");
 
   const toast = useToast();
 
@@ -92,7 +93,12 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
   const { mutate: addPhotoMutate, isLoading: addPhotoIsLoading } = useMutation({
     mutationFn: async () => {
       try {
-        await addPhotos({ closetId, images: selectedImages });
+        await addClothes({
+          closetId,
+          images: selectedImages,
+          type: category,
+          season: season,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -108,11 +114,19 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
   const handleSave = () => {
     if (!selectedImages.length) {
       console.log("Please select an image");
-      setAlert(true);
+      toast({ title: "Please select an image", status: "error" });
       return;
     }
-    setAlert(false);
     addPhotoMutate();
+  };
+
+  const handleTypeChange = (e: any) => {
+    setCategory(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleSeasonChange = (e: any) => {
+    setSeason([e.target.value]);
   };
 
   return (
@@ -127,17 +141,21 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
       >
         <ModalBody pb={6}>
           <div style={{ display: "grid", gap: "35px" }}>
-            <Select placeholder="Select Season">
-              {Seasons.map((season: any) => (
-                <option key={season.id} value={season.name}>
-                  {season.name}
+            <Select placeholder="Select Type" onChange={handleTypeChange}>
+              {type.map((category: any) => (
+                <option
+                  key={category.id}
+                  value={category.name}
+                  // id={category.id}
+                >
+                  {category.name}
                 </option>
               ))}
             </Select>
-            <Select placeholder="Select Category">
-              {WomanCategories.map((category: any) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
+            <Select placeholder="Select Season" onChange={handleSeasonChange}>
+              {Seasons.map((season: any) => (
+                <option key={season.id} value={season.name}>
+                  {season.name}
                 </option>
               ))}
             </Select>
@@ -148,21 +166,13 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
           <Button
             mr={3}
             name="Save"
-            {...(addPhotoIsLoading && { isLoading: true })}
+            isLoading={addPhotoIsLoading}
             loadingText="Saving"
-            onClick={() => {
-              {
-                alert &&
-                  toast({ title: "Please select an image", status: "error" });
-              }
-              handleSave();
-            }}
+            onClick={handleSave}
           />
 
           <Button
-            onClick={() => {
-              onClose();
-            }}
+            onClick={onClose}
             name="Cancel"
             color={useColorModeValue("gray.300", "gray.700")}
           />

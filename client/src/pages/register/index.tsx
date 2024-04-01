@@ -31,7 +31,7 @@ const Register: FC = () => {
     // const age = parseInt(data.age);
 
     signUpMutate(
-      { ...values },
+      values,
 
       {
         onSuccess: (data) => {

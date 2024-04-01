@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../constants/api";
-import { AddImages, Closet, DeleteImages } from "../interfaces/closet";
+import { AddImages, Closet, Clothe, DeleteImages } from "../interfaces/closet";
 import { getAuthHeaders, getHeaders } from "./utils/utils";
 
 export const createCloset = async (payload: Closet) => {
@@ -30,12 +30,13 @@ export const getCloset = async (closetId: string) => {
   }
 };
 
-export const addPhotos = async (payload: any) => {
+export const addClothes = async (payload: Clothe) => {
   try {
-    const { closetId, images } = payload;
+    const { closetId, images, type, season } = payload;
     const response = await axios.post(
       `${API_URL}/closet/${closetId}/images`,
-      { images },
+      { images, type, season },
+
       getHeaders()
     );
     return response.data;

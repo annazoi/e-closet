@@ -16,15 +16,23 @@ import { useQuery } from "react-query";
 import { getCloset } from "../../../services/closet";
 import { authStore } from "../../../store/authStore";
 
+// {
+//  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
+//   pants:[{},{}],
+//   shoes:[{},{}]
+// }
+
 interface CreateOutfitProps {
   closetId?: string;
 }
 
 const CreateOutfit: FC<CreateOutfitProps> = () => {
+  const [clothes, setClothes] = useState();
   const [topImage, setTopImage] = useState<string>("");
   const [middleImage, setMiddleImage] = useState<string>("");
   const [bottomImage, setBottomImage] = useState<string>("");
   const { userId, closetId } = authStore((state) => state);
+  const [item, setItem] = useState<any>([]);
 
   const { data } = useQuery({
     queryKey: ["closet", closetId],
@@ -71,33 +79,61 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
     setTopBoxHeight(size.height);
   };
 
+  //   const handleItems = () => {
+  //     const shirts = [];
+  //     const pants = [];
+  //     const shoes = [];
+  //     for (let i = 0; i < data?.clothes.length; i++) {
+  //       if (
+  //         data?.clothes[i].type === "Tops & T-shirts" ||
+  //         data?.clothes[i].type === "Sweaters & Hoodies"
+  //       ) {
+  //         shirts.push(data?.clothes[i]);
+  //       }
+  //       // if (data?.clothes[i].type === "pants") {
+  //       //   pants.push(data?.clothes[i]);
+  //       // }
+  //       // if (data?.clothes[i].type === "shoes") {
+  //       //   shoes.push(data?.clothes[i]);
+  //       // }
+  //     }
+  // setClothes({
+  //   shirts:shirts,
+  //   pants:pants,
+  //   shoes:shoes
+  // })
+  //   };
+
   return (
     <>
       <Accordion defaultIndex={[0]} allowMultiple>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                Winter Outfit
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            <Stack direction="row">
-              {data?.images.map((image: any) => (
-                <Image
-                  id="3"
-                  boxSize="100px"
-                  objectFit="cover"
-                  src={image.file}
-                  alt="Dan Abramov"
-                  onClick={() => handleTopImage(image.file)}
-                />
-              ))}
-            </Stack>
-          </AccordionPanel>
-        </AccordionItem>
+        {/* {handleItems().map((item: any) => (
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <Box as="span" flex="1" textAlign="left">
+                  {item.type}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+
+            <AccordionPanel pb={4}>
+              <Stack direction="row">
+                {item.images.map((image: any) => (
+                  <Image
+                    id="3"
+                    boxSize="100px"
+                    objectFit="cover"
+                    src={image.file}
+                    alt="Dan Abramov"
+                    onClick={() => handleTopImage(image.file)}
+                  />
+                ))}
+              </Stack>
+            </AccordionPanel>
+          </AccordionItem>
+        ))} */}
       </Accordion>
 
       <div>

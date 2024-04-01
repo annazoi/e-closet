@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateClosetDto } from './dto/create-closet.dto';
+import { ClotheDto, CreateClosetDto } from './dto/create-closet.dto';
 import { UpdateClosetDto } from './dto/update-closet.dto';
 import { S3Service } from 'src/aws-s3/aws-s3.service';
 import { Model, Error } from 'mongoose';
@@ -85,11 +85,11 @@ export class ClosetService {
         throw new NotFoundException('No closet found');
       }
 
-      const updatedImages = closet.images.filter(
+      const updatedImages = closet.clothes.filter(
         (image: any) => image._id.toString() !== imageId,
       );
 
-      closet.images = updatedImages;
+      closet.clothes = updatedImages;
 
       await closet.save();
 
@@ -102,13 +102,18 @@ export class ClosetService {
     }
   }
 
-  async addImages(id: string, files: Express.Multer.File[]) {
+  async addClothe(
+    id: string,
+    files: Express.Multer.File[],
+    clotheDto: ClotheDto,
+  ) {
     try {
       const closet = await this.closetModel.findById(id);
+
       if (!closet) {
         throw new NotFoundException('No closet found');
       }
-
+      // const { type, season } = imageCto;
       const images = [];
       for (let i = 0; i < files?.length; i++) {
         const uploadedFileUrl = await this.s3Service.uploadFile(files[i]);
@@ -117,7 +122,10 @@ export class ClosetService {
         });
       }
 
-      closet.images.push(...images);
+      closet.clothes.push({
+        ...clotheDto,
+        images,
+      });
 
       await closet.save();
 

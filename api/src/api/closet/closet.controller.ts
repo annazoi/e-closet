@@ -13,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ClosetService } from './closet.service';
-import { CreateClosetDto } from './dto/create-closet.dto';
+import { ClotheDto, CreateClosetDto } from './dto/create-closet.dto';
 import { UpdateClosetDto } from './dto/update-closet.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guard';
@@ -78,10 +78,13 @@ export class ClosetController {
   async addImages(
     @Param('id') closetId: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() clotheDto: ClotheDto,
   ) {
-    return this.closetService.addImages(closetId, files);
+    const { type } = clotheDto;
+    return this.closetService.addClothe(closetId, files, clotheDto);
   }
 
+  // delete images[]
   // @Patch('/:id/images')
   // @UseGuards(JwtGuard)
   // @ApiBearerAuth()
