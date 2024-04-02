@@ -59,29 +59,29 @@ export class ClosetController {
     return this.closetService.update(id, updateClosetDto);
   }
 
-  @Delete(':closetId/images/:imageId')
+  @Delete(':closetId/clothes/:imageId')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: Closet })
-  async deleteImage(
+  async deleteClothe(
     @Param('closetId') closetId: string,
     @Param('imageId') imageId: string,
   ) {
-    return this.closetService.deleteImage(closetId, imageId);
+    return this.closetService.deleteClothe(closetId, imageId);
   }
 
   @UseGuards(JwtGuard)
-  @Post('/:id/images')
+  @Post('/:id/clothes')
   @UseInterceptors(AnyFilesInterceptor())
   @ApiBearerAuth()
   @ApiOkResponse({ type: Closet })
-  async addImages(
+  async addClothes(
     @Param('id') closetId: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() clotheDto: ClotheDto,
   ) {
     const { type } = clotheDto;
-    return this.closetService.addClothe(closetId, files, clotheDto);
+    return this.closetService.addClothes(closetId, files, clotheDto);
   }
 
   // delete images[]

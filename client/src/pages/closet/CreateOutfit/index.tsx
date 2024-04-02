@@ -9,12 +9,15 @@ import {
   Box,
   Image,
   Stack,
+  HStack,
 } from "@chakra-ui/react";
 import React from "react";
 import "./style.css";
 import { useQuery } from "react-query";
 import { getCloset } from "../../../services/closet";
 import { authStore } from "../../../store/authStore";
+import { Clothe } from "../../../interfaces/closet";
+import { ClotheCategories } from "../../../enums/clothes";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -26,34 +29,30 @@ interface CreateOutfitProps {
   closetId?: string;
 }
 
-const CreateOutfit: FC<CreateOutfitProps> = () => {
-  const [clothes, setClothes] = useState();
-  const [topImage, setTopImage] = useState<string>("");
-  const [middleImage, setMiddleImage] = useState<string>("");
-  const [bottomImage, setBottomImage] = useState<string>("");
-  const { userId, closetId } = authStore((state) => state);
-  const [item, setItem] = useState<any>([]);
+interface CategorizedClothes {
+  shirts: any[];
+  pants: any[];
+  shoes: any[];
+}
 
-  const { data } = useQuery({
+const CreateOutfit: FC<CreateOutfitProps> = () => {
+  const { userId, closetId } = authStore((state) => state);
+  const [clothes, setClothes] = useState<any>();
+  const [outfit, setOutfit] = useState<any[]>([]);
+
+  useQuery({
     queryKey: ["closet", closetId],
     queryFn: () => {
       return getCloset(closetId);
     },
+    onSuccess: (data: any) => {
+      categorizeClothes(data);
+    },
   });
 
-  // console.log(data);
+  // console.log("data", data);
 
-  const handleTopImage = (image: string) => {
-    setTopImage(image);
-  };
-
-  const handleMiddleImage = (image: string) => {
-    setMiddleImage(image);
-  };
-
-  const handleBottomImage = (image: string) => {
-    setBottomImage(image);
-  };
+  const handleImage = (image: string) => {};
 
   const [boxWidth, setBoxWidth] = React.useState(400);
   const [boxHeight, setBoxHeight] = React.useState(400);
@@ -79,64 +78,94 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
     setTopBoxHeight(size.height);
   };
 
-  //   const handleItems = () => {
-  //     const shirts = [];
-  //     const pants = [];
-  //     const shoes = [];
-  //     for (let i = 0; i < data?.clothes.length; i++) {
-  //       if (
-  //         data?.clothes[i].type === "Tops & T-shirts" ||
-  //         data?.clothes[i].type === "Sweaters & Hoodies"
-  //       ) {
-  //         shirts.push(data?.clothes[i]);
-  //       }
-  //       // if (data?.clothes[i].type === "pants") {
-  //       //   pants.push(data?.clothes[i]);
-  //       // }
-  //       // if (data?.clothes[i].type === "shoes") {
-  //       //   shoes.push(data?.clothes[i]);
-  //       // }
-  //     }
-  // setClothes({
-  //   shirts:shirts,
-  //   pants:pants,
-  //   shoes:shoes
-  // })
-  //   };
+  const categorizeClothes = (data: any) => {
+    const shirts = [] as Clothe[];
+    const pants = [] as Clothe[];
+    const shoes = [] as Clothe[];
+    for (let i = 0; i < (data?.clothes.length ?? 0); i++) {
+      if (
+        data?.clothes[i].type === ClotheCategories.TOP_AND_T_SHIRTS ||
+        data?.clothes[i].type === ClotheCategories.SWEATER_AND_HOODIES
+      ) {
+        shirts.push(data?.clothes[i]);
+      }
+      if (data?.clothes[i].type === ClotheCategories.BOTTOMS_AND_LEGGINGS) {
+        pants.push(data?.clothes[i]);
+      }
+      if (data?.clothes[i].type === ClotheCategories.SHOES_AND_SOCKS) {
+        shoes.push(data?.clothes[i]);
+      }
+    }
+    setClothes({
+      shirts: shirts,
+      pants: pants,
+      shoes: shoes,
+    });
+    console.log("clothes", {
+      shirts: shirts,
+      pants: pants,
+      shoes: shoes,
+    });
+  };
+
+  const handleOutfit = (clothe: any, image: any) => {
+    const existingImage = outfit.find((item) => item.file === image.file);
+    if (existingImage) return;
+    console.log("image", image);
+    setOutfit([...outfit, image]);
+
+    console.log("clothe", clothe);
+  };
 
   return (
     <>
       <Accordion defaultIndex={[0]} allowMultiple>
-        {/* {handleItems().map((item: any) => (
-          <AccordionItem>
-            <h2>
+        {clothes &&
+          Object.keys(clothes).map((item: string, index: number) => (
+            <AccordionItem key={index}>
               <AccordionButton>
                 <Box as="span" flex="1" textAlign="left">
-                  {item.type}
+                  {item}
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-            </h2>
-
-            <AccordionPanel pb={4}>
-              <Stack direction="row">
-                {item.images.map((image: any) => (
-                  <Image
-                    id="3"
-                    boxSize="100px"
-                    objectFit="cover"
-                    src={image.file}
-                    alt="Dan Abramov"
-                    onClick={() => handleTopImage(image.file)}
-                  />
-                ))}
-              </Stack>
-            </AccordionPanel>
-          </AccordionItem>
-        ))} */}
+              <AccordionPanel pb={4}>
+                <HStack spacing={"20px"}>
+                  {clothes[item].map((clothe: any, index: number) => (
+                    <div key={index}>
+                      {clothe.images.map((image: any, index: number) => (
+                        <Image
+                          key={index}
+                          boxSize="100px"
+                          objectFit="cover"
+                          src={image.file}
+                          alt=""
+                          onClick={() => handleOutfit(clothe, image)}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </HStack>
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
       </Accordion>
 
-      <div>
+      {outfit && (
+        <HStack>
+          {outfit.map((image: any, index: number) => (
+            <Image
+              key={index}
+              boxSize="100px"
+              objectFit="cover"
+              src={image.file}
+              alt=""
+            />
+          ))}
+        </HStack>
+      )}
+
+      {/* <div>
         <div>
           <Resizable
             width={boxWidth}
@@ -190,7 +219,7 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
             />
           )}
         </div>
-      </Resizable>
+      </Resizable> */}
     </>
   );
 };

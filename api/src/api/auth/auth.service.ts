@@ -90,9 +90,13 @@ export class AuthService {
       throw new ForbiddenException('Credentials incorrect');
     }
 
+    const closet = await this.closetModel.findOne({
+      userId: user.id,
+    });
+
     const token = await this.jwt.signToken({
       userId: user.id,
-      // closetId: user.closetId,
+      closetId: closet._id,
     });
 
     const { password, ...rest } = user.toJSON();
@@ -100,6 +104,7 @@ export class AuthService {
     return {
       token: token,
       user: rest,
+      closet,
     };
   }
 }

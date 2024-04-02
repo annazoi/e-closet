@@ -1,7 +1,7 @@
 import { Image } from "./components";
 
 export interface Closet {
-  images: string[];
+  clothes: Clothe[];
   userId: string;
 }
 

@@ -1,10 +1,9 @@
-import Button from "../../ui/Button";
 import { FaHome } from "react-icons/fa";
 import { BiCloset } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoMdSettings, IoMdLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { useColorModeValue } from "@chakra-ui/react";
+import { Button, useColorModeValue } from "@chakra-ui/react";
 import { authStore } from "../../../store/authStore";
 import { GrContact } from "react-icons/gr";
 import { IoInformationCircleSharp } from "react-icons/io5";
@@ -60,15 +59,19 @@ const isLogOutLinks: any = [
 const MenuContent = () => {
   const navigate = useNavigate();
   const { logOut, isLoggedIn } = authStore((state) => state);
+
+  const handleLogOut = () => {
+    logOut();
+    navigate("/login");
+  };
   return (
     <div style={{ display: "grid", gap: "20px" }}>
       {isLoggedIn
         ? isLoggedInLinks.map((link: any) => (
             <Button
               key={link.id}
-              name={link.name}
               leftIcon={link.icon}
-              color={useColorModeValue("pink.200", "gray.700")}
+              bg={useColorModeValue("pink.200", "gray.700")}
               onClick={() => {
                 navigate(link.path);
               }}
@@ -77,14 +80,15 @@ const MenuContent = () => {
               //     bg: "primary.400",
               //     color: "white",
               //   }}
-            />
+            >
+              {link.name}
+            </Button>
           ))
         : isLogOutLinks.map((link: any) => (
             <Button
               key={link.id}
-              name={link.name}
               leftIcon={link.icon}
-              color={useColorModeValue("pink.200", "gray.700")}
+              bg={useColorModeValue("pink.200", "gray.700")}
               onClick={() => {
                 navigate(link.path);
               }}
@@ -93,19 +97,19 @@ const MenuContent = () => {
               //     bg: "primary.400",
               //     color: "white",
               //   }}
-            />
+            >
+              {link.name}
+            </Button>
           ))}
 
       {isLoggedIn && (
         <Button
-          name="Logout"
           leftIcon={<IoMdLogOut />}
-          onClick={() => {
-            logOut();
-            navigate("/login");
-          }}
-          color={useColorModeValue("pink.200", "gray.700")}
-        />
+          onClick={handleLogOut}
+          bg={useColorModeValue("pink.100", "gray.700")}
+        >
+          Logout
+        </Button>
       )}
     </div>
   );

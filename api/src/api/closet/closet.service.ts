@@ -78,7 +78,7 @@ export class ClosetService {
     }
   }
 
-  async deleteImage(closetId: string, imageId: string) {
+  async deleteClothe(closetId: string, imageId: string) {
     try {
       const closet = await this.closetModel.findById(closetId);
       if (!closet) {
@@ -102,7 +102,7 @@ export class ClosetService {
     }
   }
 
-  async addClothe(
+  async addClothes(
     id: string,
     files: Express.Multer.File[],
     clotheDto: ClotheDto,

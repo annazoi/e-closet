@@ -1,11 +1,10 @@
-import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Heading, useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import { FC } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { SignupSchema } from "../../validation-schemas/auth";
-import Button from "../../components/ui/Button";
 import { signUp } from "../../services/auth";
 import { useMutation } from "react-query";
 import { authStore } from "../../store/authStore";
@@ -86,21 +85,25 @@ const Register: FC = () => {
             error={errors.password?.message}
           />
           <Button
-            mt={5}
-            mb={8}
             type="submit"
             loadingText="Submitting"
-            name="Sign Up"
-          ></Button>
+            bg={useColorModeValue("pink.300", "black")}
+            w={"100%"}
+            mt={5}
+            mb={8}
+          >
+            Sign Up
+          </Button>
           <Button
-            mb={3}
-            color={useColorModeValue("pink.100", "gray.100")}
-            variant="outline"
             onClick={() => {
               navigate("/login");
             }}
-            name=" I already have an account"
-          ></Button>
+            variant={"outline"}
+            w={"100%"}
+            mb={3}
+          >
+            I already have an account
+          </Button>
         </form>
       </Box>
     </>

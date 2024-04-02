@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_URL } from "../constants/api";
 import { AddImages, Closet, Clothe, DeleteImages } from "../interfaces/closet";
 import { getAuthHeaders, getHeaders } from "./utils/utils";
+import { formatCloset } from "./formatter/closet";
 
 export const createCloset = async (payload: Closet) => {
   try {
@@ -24,7 +25,9 @@ export const getCloset = async (closetId: string) => {
       getHeaders()
     );
 
-    return response.data;
+    const formattedData = formatCloset(response.data);
+
+    return formattedData;
   } catch (error: any) {
     throw error.response.data;
   }
@@ -34,7 +37,7 @@ export const addClothes = async (payload: Clothe) => {
   try {
     const { closetId, images, type, season } = payload;
     const response = await axios.post(
-      `${API_URL}/closet/${closetId}/images`,
+      `${API_URL}/closet/${closetId}/clothes`,
       { images, type, season },
 
       getHeaders()
@@ -45,10 +48,10 @@ export const addClothes = async (payload: Clothe) => {
   }
 };
 
-export const deleteImage = async (closetId: string, imageId: string) => {
+export const deleteClothe = async (closetId: string, imageId: string) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/closet/${closetId}/images/${imageId}`,
+      `${API_URL}/closet/${closetId}/clothes/${imageId}`,
       getAuthHeaders()
     );
     return response.data;

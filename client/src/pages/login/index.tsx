@@ -1,4 +1,4 @@
-import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Heading, useColorModeValue } from "@chakra-ui/react";
 import Input from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { SignInSchema } from "../../validation-schemas/auth";
 import { useMutation } from "react-query";
-import Button from "../../components/ui/Button";
 import { signIn } from "../../services/auth";
 import { authStore } from "../../store/authStore";
 
@@ -14,7 +13,7 @@ const Login: FC = () => {
   const { logIn } = authStore((state) => state);
   const navigate = useNavigate();
 
-  const { mutate: signInMuutate } = useMutation(signIn);
+  const { mutate: signInMutate } = useMutation(signIn);
 
   const {
     handleSubmit,
@@ -26,7 +25,7 @@ const Login: FC = () => {
   });
 
   function onSubmit(values: any) {
-    signInMuutate(values, {
+    signInMutate(values, {
       onSuccess: (data) => {
         logIn({
           ...data.user,
@@ -66,20 +65,25 @@ const Login: FC = () => {
             error={errors.password?.message}
           />
           <Button
-            mt={5}
-            mb={8}
-            name="Sign Ip"
             type="submit"
             loadingText="Submitting"
-          ></Button>
+            bg={useColorModeValue("pink.300", "black")}
+            w={"100%"}
+            mt={5}
+            mb={8}
+          >
+            Sign Ip
+          </Button>
           <Button
-            mb={3}
             onClick={() => {
               navigate("/register");
             }}
-            name="I don't have account"
-            color={useColorModeValue("pink.100", "gray.100")}
-          ></Button>
+            variant={"outline"}
+            w={"100%"}
+            mb={3}
+          >
+            I don't have account
+          </Button>
         </form>
       </Box>
     </>

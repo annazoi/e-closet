@@ -1,15 +1,18 @@
+import { Button, useColorModeValue } from "@chakra-ui/react";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/ui/Button";
 
 const About: FC = () => {
   const navigate = useNavigate();
   return (
     <div>
       <Button
-        name="Return to Login"
         onClick={() => navigate("/login")}
-      ></Button>
+        bg={useColorModeValue("pink.300", "black")}
+        w={"100%"}
+      >
+        Return to Login
+      </Button>
     </div>
   );
 };

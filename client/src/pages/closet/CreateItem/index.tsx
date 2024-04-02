@@ -1,7 +1,7 @@
 import {
+  Button,
   ModalBody,
   ModalFooter,
-  Select,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -11,67 +11,9 @@ import { addClothes } from "../../../services/closet";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
 import { Image } from "../../../interfaces/components";
-import Button from "../../../components/ui/Button";
-
-const Seasons = [
-  {
-    id: 1,
-    name: "Winter",
-  },
-  {
-    id: 2,
-    name: "Spring",
-  },
-  {
-    id: 3,
-    name: "Summer",
-  },
-  {
-    id: 4,
-    name: "Fall",
-  },
-  {
-    id: 5,
-    name: "All",
-  },
-];
-
-const type = [
-  {
-    id: 1,
-    name: "Tops & T-shirts",
-  },
-  {
-    id: 2,
-    name: "Sweaters & Hoodies",
-  },
-  {
-    id: 3,
-    name: "Bottoms & Leggings",
-  },
-  { id: 4, name: "Jumpsuits & Dresses" },
-  {
-    id: 5,
-    name: "Jackets & Coats",
-  },
-  {
-    id: 6,
-    name: "Shorts & Skirts",
-  },
-  {
-    id: 7,
-    name: "Shoes & Socks",
-  },
-  { id: 8, name: "Suit" },
-  {
-    id: 9,
-    name: "Accessories",
-  },
-  {
-    id: 10,
-    name: "Other",
-  },
-];
+import { Clothe } from "../../../interfaces/closet";
+import Select from "../../../components/ui/Select";
+import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
 
 interface CreateItemProps {
   closetId: string;
@@ -90,26 +32,11 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
     setSelectedImages([image]);
   };
 
-  const { mutate: addPhotoMutate, isLoading: addPhotoIsLoading } = useMutation({
-    mutationFn: async () => {
-      try {
-        await addClothes({
-          closetId,
-          images: selectedImages,
-          type: category,
-          season: season,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    onSuccess: () => {
-      onClose();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const { mutate: addClothesMutate, isLoading: addPhotoIsLoading } =
+    useMutation({
+      mutationFn: ({ closetId, images, type, season }: Clothe) =>
+        addClothes({ closetId, images, type, season }),
+    });
 
   const handleSave = () => {
     if (!selectedImages.length) {
@@ -117,12 +44,26 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
       toast({ title: "Please select an image", status: "error" });
       return;
     }
-    addPhotoMutate();
+    addClothesMutate(
+      {
+        closetId,
+        images: selectedImages,
+        type: category,
+        season: season,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
   };
 
   const handleTypeChange = (e: any) => {
     setCategory(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleSeasonChange = (e: any) => {
@@ -141,41 +82,34 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
       >
         <ModalBody pb={6}>
           <div style={{ display: "grid", gap: "35px" }}>
-            <Select placeholder="Select Type" onChange={handleTypeChange}>
-              {type.map((category: any) => (
-                <option
-                  key={category.id}
-                  value={category.name}
-                  // id={category.id}
-                >
-                  {category.name}
-                </option>
-              ))}
-            </Select>
-            <Select placeholder="Select Season" onChange={handleSeasonChange}>
-              {Seasons.map((season: any) => (
-                <option key={season.id} value={season.name}>
-                  {season.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              onChange={handleTypeChange}
+              options={CLOTHE_TYPES}
+              placeholder="Select Type"
+            />
+            <Select
+              onChange={handleSeasonChange}
+              options={SEASONS}
+              placeholder="Select Season"
+            />
             <ImagePicker onChange={handleImageChange} />
           </div>
         </ModalBody>
         <ModalFooter>
           <Button
-            mr={3}
-            name="Save"
+            onClick={handleSave}
             isLoading={addPhotoIsLoading}
             loadingText="Saving"
-            onClick={handleSave}
-          />
+            bg={useColorModeValue("pink.300", "black")}
+            w={"100%"}
+            mr={3}
+          >
+            Save
+          </Button>
 
-          <Button
-            onClick={onClose}
-            name="Cancel"
-            color={useColorModeValue("gray.300", "gray.700")}
-          />
+          <Button onClick={onClose} variant={"outline"} w={"100%"}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
     </>
