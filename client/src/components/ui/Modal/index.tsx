@@ -11,7 +11,6 @@ import {
   useToast,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Button from "../Button";
 import { FC } from "react";
 
 type ModalProps = {
@@ -45,7 +44,7 @@ const Modal: FC<ModalProps> = ({
       {...rest}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW="100%">
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         {/* <ModalBody pb={6}>{rest.children}</ModalBody> */}

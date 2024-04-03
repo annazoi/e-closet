@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ResizableBox, Resizable } from "react-resizable";
 import {
   Accordion,
@@ -10,6 +10,11 @@ import {
   Image,
   Stack,
   HStack,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import React from "react";
 import "./style.css";
@@ -19,26 +24,27 @@ import { authStore } from "../../../store/authStore";
 import { Clothe } from "../../../interfaces/closet";
 import { ClotheCategories } from "../../../enums/clothes";
 import Canvas from "../../../components/ui/Canvas";
+import { CLOTHE_TYPES_ARRAY } from "../../../constants/clotheTypes";
+import Modal from "../../../components/ui/Modal";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
-//   pants:[{},{}],
+//   pants:[],
 //   shoes:[{},{}]
 // }
 
 interface CreateOutfitProps {
-  closetId?: string;
+  isOpen: any;
+  onClose: any;
 }
 
 interface CategorizedClothes {
-  shirts: any[];
-  pants: any[];
-  shoes: any[];
+  [key: string]: any[];
 }
 
-const CreateOutfit: FC<CreateOutfitProps> = () => {
+const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
   const { userId, closetId } = authStore((state) => state);
-  const [clothes, setClothes] = useState<any>();
+  const [clothes, setClothes] = useState<CategorizedClothes>();
   const [selectedClothes, setSelectedClothes] = useState<any[]>([]);
 
   useQuery({
@@ -80,34 +86,22 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
   };
 
   const categorizeClothes = (data: any) => {
-    const shirts = [] as Clothe[];
-    const pants = [] as Clothe[];
-    const shoes = [] as Clothe[];
-    for (let i = 0; i < (data?.clothes.length ?? 0); i++) {
-      if (
-        data?.clothes[i].type === ClotheCategories.TOP_AND_T_SHIRTS ||
-        data?.clothes[i].type === ClotheCategories.SWEATER_AND_HOODIES
-      ) {
-        shirts.push(data?.clothes[i]);
-      }
-      if (data?.clothes[i].type === ClotheCategories.BOTTOMS_AND_LEGGINGS) {
-        pants.push(data?.clothes[i]);
-      }
-      if (data?.clothes[i].type === ClotheCategories.SHOES_AND_SOCKS) {
-        shoes.push(data?.clothes[i]);
+    let tempClothes: { [key: string]: any[] } = {};
+
+    for (let i = 0; i < CLOTHE_TYPES_ARRAY.length; i++) {
+      tempClothes[CLOTHE_TYPES_ARRAY[i]] = [];
+      for (let j = 0; j < data?.clothes.length; j++) {
+        if (CLOTHE_TYPES_ARRAY[i] === data?.clothes[j].type) {
+          tempClothes[CLOTHE_TYPES_ARRAY[i]].push(data?.clothes[j]);
+        }
       }
     }
-    setClothes({
-      shirts: shirts,
-      pants: pants,
-      shoes: shoes,
-    });
-    console.log("clothes", {
-      shirts: shirts,
-      pants: pants,
-      shoes: shoes,
-    });
+    setClothes(tempClothes);
   };
+
+  useEffect(() => {
+    console.log("clothes", clothes);
+  }, [clothes]);
 
   const handleSelectedClothes = (clothe: any) => {
     const existingClothe = selectedClothes.find(
@@ -128,116 +122,150 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
     setSelectedClothes([...selectedClothes, clothe]);
   };
   return (
-    <div>
-      <Accordion defaultIndex={[0]} allowMultiple>
-        {clothes &&
-          Object.keys(clothes).map((item: string, index: number) => (
-            <AccordionItem key={index}>
-              <AccordionButton>
-                <Box as="span" flex="1" textAlign="left">
-                  {item}
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel pb={4}>
-                <HStack spacing={"20px"}>
-                  {clothes[item].map((clothe: any, index: number) => (
-                    <div key={index}>
-                      {clothe.images.map((image: any, index: number) => (
-                        <Image
-                          key={index}
-                          boxSize="100px"
-                          objectFit="cover"
-                          src={image.file}
-                          alt=""
-                          onClick={() => handleSelectedClothes(clothe)}
-                          border={
-                            selectedClothes.find(
-                              (item: any) => item._id === clothe._id
-                            )
-                              ? "2px solid red"
-                              : ""
-                          }
-                        />
-                      ))}
-                    </div>
-                  ))}
-                </HStack>
-              </AccordionPanel>
-            </AccordionItem>
-          ))}
-      </Accordion>
-
-      {selectedClothes && (
-        <HStack>
-          {selectedClothes.map((clothe: any, index: number) => (
-            <Image
-              key={index}
-              boxSize="100px"
-              objectFit="cover"
-              src={clothe.images[0].file}
-              alt=""
-            />
-          ))}
-        </HStack>
-      )}
-      {/* <Canvas image={} /> */}
-      {/* <div>
-        <div>
-          <Resizable
-            width={boxWidth}
-            height={boxHeight}
-            minConstraints={[100, 100]}
-            // maxConstraints={[400, 400]}
-            onResize={onResize}
-          >
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Create an item from your closet"
+      >
+        <ModalBody pb={6}>
+          <HStack>
+            <Accordion defaultIndex={[0]} allowMultiple w={"100%"}>
+              {CLOTHE_TYPES_ARRAY.map((type: string, index: number) => (
+                <AccordionItem key={index}>
+                  <AccordionButton>
+                    <Box as="span" flex="1" textAlign="left">
+                      {type}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <HStack spacing={"20px"}>
+                      {clothes &&
+                        clothes[type] &&
+                        clothes[type].map((clothe: any, index: number) => (
+                          <div key={index}>
+                            {clothe.images.map((image: any, index: number) => (
+                              <Image
+                                key={index}
+                                boxSize="100%"
+                                objectFit="cover"
+                                src={image.file}
+                                alt=""
+                                onClick={() => handleSelectedClothes(clothe)}
+                                border={
+                                  selectedClothes.find(
+                                    (item: any) => item._id === clothe._id
+                                  )
+                                    ? "2px solid red"
+                                    : ""
+                                }
+                              />
+                            ))}
+                          </div>
+                        ))}
+                    </HStack>
+                  </AccordionPanel>
+                </AccordionItem>
+              ))}
+            </Accordion>
             <div
               style={{
-                width: boxWidth,
-                height: boxHeight,
-                marginLeft: "85px",
+                width: "100%",
+                height: "100%",
               }}
-              className="resizable-box"
             >
-              {topImage && (
-                <Image
-                  // boxSize="100px"
-                  // objectFit="cover"
-                  src={topImage}
-                  alt=""
-                />
+              {selectedClothes && (
+                <VStack>
+                  {selectedClothes.map((clothe: any, index: number) => (
+                    <Image
+                      key={index}
+                      boxSize="100px"
+                      objectFit="cover"
+                      src={clothe.images[0].file}
+                      alt=""
+                    />
+                  ))}
+                </VStack>
               )}
-            </div>
-          </Resizable>
-        </div>
-      </div>
 
-      <Resizable
-        width={topBoxWidth}
-        height={topBoxHeight}
+              {/* <Canvas image={} /> */}
+              {/* <div>
+        <div>
+        <Resizable
+        width={boxWidth}
+        height={boxHeight}
         minConstraints={[100, 100]}
         // maxConstraints={[400, 400]}
-        onResize={onMiddleResize}
-      >
-        <div
-          // style={{ width: boxWidth, height: boxHeight }}
+        onResize={onResize}
+          >
+          <div
           style={{
-            width: topBoxWidth,
-            height: topBoxHeight,
+            width: boxWidth,
+            height: boxHeight,
+            marginLeft: "85px",
           }}
           className="resizable-box"
-        >
-          {middleImage && (
+          >
+          {topImage && (
             <Image
-              // boxSize="100px"
-              // objectFit="cover"
-              src={middleImage}
-              alt=""
+            // boxSize="100px"
+            // objectFit="cover"
+            src={topImage}
+            alt=""
             />
+            )}
+            </div>
+            </Resizable>
+            </div>
+            </div>
+            
+            <Resizable
+            width={topBoxWidth}
+            height={topBoxHeight}
+            minConstraints={[100, 100]}
+            // maxConstraints={[400, 400]}
+            onResize={onMiddleResize}
+            >
+            <div
+            // style={{ width: boxWidth, height: boxHeight }}
+            style={{
+              width: topBoxWidth,
+              height: topBoxHeight,
+        }}
+        className="resizable-box"
+        >
+        {middleImage && (
+          <Image
+          // boxSize="100px"
+          // objectFit="cover"
+          src={middleImage}
+          alt=""
+          />
           )}
-        </div>
-      </Resizable> */}
-    </div>
+          </div>
+        </Resizable> */}
+            </div>
+          </HStack>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            // onClick={handleSave}
+            // isLoading={addPhotoIsLoading}
+            loadingText="Saving"
+            bg={useColorModeValue("pink.300", "black")}
+            // w={"100%"}
+            mr={3}
+          >
+            Save
+          </Button>
+
+          <Button onClick={onClose} variant={"outline"}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 };
 export default CreateOutfit;

@@ -12,10 +12,19 @@ import CreateItem from "./CreateItem";
 import { useNavigate } from "react-router-dom";
 
 import { authStore } from "../../store/authStore";
+import CreateOutfit from "./CreateOutfit";
 
 const Closet: FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+  const {
+    isOpen: isOpenitem,
+    onOpen: onOpenItem,
+    onClose: onCloseItem,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenOutfit,
+    onOpen: onOpenOutfit,
+    onClose: onCloseOutfit,
+  } = useDisclosure();
   const { closetId } = authStore((state) => state);
 
   return (
@@ -31,7 +40,7 @@ const Closet: FC = () => {
       />
       <ButtonGroup>
         <Button
-          onClick={onOpen}
+          onClick={onOpenItem}
           rightIcon={<IoShirt />}
           bg={useColorModeValue("pink.300", "black")}
           w={"100%"}
@@ -39,7 +48,7 @@ const Closet: FC = () => {
           Add Item
         </Button>
         <Button
-          onClick={() => navigate(`/closet/create-outfit`)}
+          onClick={onOpenOutfit}
           rightIcon={<GiClothes />}
           bg={useColorModeValue("pink.300", "black")}
           w={"100%"}
@@ -48,7 +57,12 @@ const Closet: FC = () => {
         </Button>
       </ButtonGroup>
 
-      <CreateItem closetId={closetId} isOpen={isOpen} onClose={onClose} />
+      <CreateItem
+        closetId={closetId}
+        isOpen={isOpenitem}
+        onClose={onCloseItem}
+      />
+      <CreateOutfit isOpen={isOpenOutfit} onClose={onCloseOutfit} />
     </Box>
   );
 };

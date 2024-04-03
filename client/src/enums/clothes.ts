@@ -9,4 +9,5 @@ export enum ClotheCategories {
   SUIT = "Suit",
   ACCESSORIES = "Accessories",
   OTHER = "Other",
+  length = "length",
 }
