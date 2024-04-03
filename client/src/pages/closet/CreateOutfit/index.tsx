@@ -18,6 +18,7 @@ import { getCloset } from "../../../services/closet";
 import { authStore } from "../../../store/authStore";
 import { Clothe } from "../../../interfaces/closet";
 import { ClotheCategories } from "../../../enums/clothes";
+import Canvas from "../../../components/ui/Canvas";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -38,7 +39,7 @@ interface CategorizedClothes {
 const CreateOutfit: FC<CreateOutfitProps> = () => {
   const { userId, closetId } = authStore((state) => state);
   const [clothes, setClothes] = useState<any>();
-  const [outfit, setOutfit] = useState<any[]>([]);
+  const [selectedClothes, setSelectedClothes] = useState<any[]>([]);
 
   useQuery({
     queryKey: ["closet", closetId],
@@ -108,17 +109,26 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
     });
   };
 
-  const handleOutfit = (clothe: any, image: any) => {
-    const existingImage = outfit.find((item) => item.file === image.file);
-    if (existingImage) return;
-    console.log("image", image);
-    setOutfit([...outfit, image]);
-
-    console.log("clothe", clothe);
+  const handleSelectedClothes = (clothe: any) => {
+    const existingClothe = selectedClothes.find(
+      (item) => item._id === clothe._id
+    );
+    const existingType = selectedClothes.find(
+      (item) => item.type === clothe.type
+    );
+    if (existingClothe) {
+      setSelectedClothes(
+        selectedClothes.filter((item) => item._id !== clothe._id)
+      );
+      return;
+    }
+    if (existingType) {
+      return;
+    }
+    setSelectedClothes([...selectedClothes, clothe]);
   };
-
   return (
-    <>
+    <div>
       <Accordion defaultIndex={[0]} allowMultiple>
         {clothes &&
           Object.keys(clothes).map((item: string, index: number) => (
@@ -140,7 +150,14 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
                           objectFit="cover"
                           src={image.file}
                           alt=""
-                          onClick={() => handleOutfit(clothe, image)}
+                          onClick={() => handleSelectedClothes(clothe)}
+                          border={
+                            selectedClothes.find(
+                              (item: any) => item._id === clothe._id
+                            )
+                              ? "2px solid red"
+                              : ""
+                          }
                         />
                       ))}
                     </div>
@@ -151,20 +168,20 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
           ))}
       </Accordion>
 
-      {outfit && (
+      {selectedClothes && (
         <HStack>
-          {outfit.map((image: any, index: number) => (
+          {selectedClothes.map((clothe: any, index: number) => (
             <Image
               key={index}
               boxSize="100px"
               objectFit="cover"
-              src={image.file}
+              src={clothe.images[0].file}
               alt=""
             />
           ))}
         </HStack>
       )}
-
+      {/* <Canvas image={} /> */}
       {/* <div>
         <div>
           <Resizable
@@ -220,7 +237,7 @@ const CreateOutfit: FC<CreateOutfitProps> = () => {
           )}
         </div>
       </Resizable> */}
-    </>
+    </div>
   );
 };
 export default CreateOutfit;
