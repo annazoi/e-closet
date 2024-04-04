@@ -3,18 +3,19 @@ import { fabric } from "fabric";
 import "./style.css";
 
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
+import { Image } from "fabric/fabric-impl";
 
 interface CanvasProps {
-  image: any;
+  image: Image[];
 }
 
-const Canvas: FC<CanvasProps> = (image) => {
+const Canvas: FC<CanvasProps> = ({ image }) => {
   const { selectedObjects, editor, onReady } = useFabricJSEditor();
-  useEffect(() => {
-    fabric.Image.fromURL(image, function (oImg: any) {
-      editor?.canvas.add(oImg);
-    });
-  }, [fabric, editor]);
+  // useEffect(() => {
+  //   fabric.Image.fromURL(image, function (oImg: Image) {
+  //     editor?.canvas.add(oImg);
+  //   });
+  // }, [fabric, editor]);
 
   return (
     <div>

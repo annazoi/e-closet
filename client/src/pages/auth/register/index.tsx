@@ -1,13 +1,13 @@
 import { Box, Button, Heading, useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Input from "../../components/ui/Input";
+import Input from "../../../components/ui/Input";
 import { FC } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { SignupSchema } from "../../validation-schemas/auth";
-import { signUp } from "../../services/auth";
+import { SignupSchema } from "../../../validation-schemas/auth";
+import { signUp } from "../../../services/auth";
 import { useMutation } from "react-query";
-import { authStore } from "../../store/authStore";
+import { authStore } from "../../../store/authStore";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);

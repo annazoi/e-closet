@@ -1,7 +1,13 @@
-import { Image } from './../../../../../client/src/interfaces/components';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class CreateClosetDto {
+export class CreateClotheDto {
+  @IsString()
+  type: string;
+
+  @IsArray()
+  @IsOptional()
+  season: string[];
+
   @IsOptional()
   images: Express.Multer.File[];
 }

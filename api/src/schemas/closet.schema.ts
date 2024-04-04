@@ -1,29 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-
-@Schema()
-export class Image {
-  @Prop()
-  file: string;
-}
-const ImageSchema = SchemaFactory.createForClass(Image);
-
-@Schema({
-  timestamps: true,
-})
-export class Clothe {
-  @Prop({
-    type: [ImageSchema],
-  })
-  images: Image[];
-
-  @Prop()
-  type: string;
-
-  @Prop()
-  season: string[];
-}
-const ClotheSchema = SchemaFactory.createForClass(Clothe);
+import { Clothe, ClotheSchema } from './clothe.schema';
 
 @Schema({
   timestamps: true,

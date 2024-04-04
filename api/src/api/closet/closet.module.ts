@@ -9,7 +9,6 @@ import { S3Service } from 'src/aws-s3/aws-s3.service';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Closet', schema: ClosetSchema }]),
-    // AwsS3Module,
   ],
   exports: [ClosetService],
   controllers: [ClosetController],

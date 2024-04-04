@@ -13,12 +13,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ClosetService } from './closet.service';
-import { ClotheDto, CreateClosetDto } from './dto/create-closet.dto';
 import { UpdateClosetDto } from './dto/update-closet.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guard';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Closet } from 'src/schemas/closet.schema';
+import { CreateClotheDto } from '../clothes/dto/create-clothe.dto';
 
 @Controller('closet')
 @ApiTags('Closet')
@@ -51,6 +51,7 @@ export class ClosetController {
   findOne(@Param('id') id: string) {
     return this.closetService.findOne(id);
   }
+
   @Patch(':id')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
@@ -59,30 +60,30 @@ export class ClosetController {
     return this.closetService.update(id, updateClosetDto);
   }
 
-  @Delete(':closetId/clothes/:imageId')
-  @UseGuards(JwtGuard)
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Closet })
-  async deleteClothe(
-    @Param('closetId') closetId: string,
-    @Param('imageId') imageId: string,
-  ) {
-    return this.closetService.deleteClothe(closetId, imageId);
-  }
+  // @Delete(':closetId/clothes/:imageId')
+  // @UseGuards(JwtGuard)
+  // @ApiBearerAuth()
+  // @ApiOkResponse({ type: Closet })
+  // async deleteClothe(
+  //   @Param('closetId') closetId: string,
+  //   @Param('imageId') imageId: string,
+  // ) {
+  //   return this.closetService.deleteClothe(closetId, imageId);
+  // }
 
-  @UseGuards(JwtGuard)
-  @Post('/:id/clothes')
-  @UseInterceptors(AnyFilesInterceptor())
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: Closet })
-  async addClothes(
-    @Param('id') closetId: string,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() clotheDto: ClotheDto,
-  ) {
-    const { type } = clotheDto;
-    return this.closetService.addClothes(closetId, files, clotheDto);
-  }
+  // @UseGuards(JwtGuard)
+  // @Post('/:id/clothes')
+  // @UseInterceptors(AnyFilesInterceptor())
+  // @ApiBearerAuth()
+  // @ApiOkResponse({ type: Closet })
+  // async addClothes(
+  //   @Param('id') closetId: string,
+  //   @UploadedFiles() files: Array<Express.Multer.File>,
+  //   @Body() createClotheDto: CreateClotheDto,
+  // ) {
+  //   const { type } = createClotheDto;
+  //   return this.closetService.addClothes(closetId, files, createClotheDto);
+  // }
 
   // delete images[]
   // @Patch('/:id/images')
