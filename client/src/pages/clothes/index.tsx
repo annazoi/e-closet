@@ -5,13 +5,11 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import CreateItem from "./CreateItem";
-import { useNavigate } from "react-router-dom";
 
-import { authStore } from "../../store/authStore";
 import CreateOutfit from "./CreateOutfit";
 
 const Closet: FC = () => {
@@ -25,15 +23,9 @@ const Closet: FC = () => {
     onOpen: onOpenOutfit,
     onClose: onCloseOutfit,
   } = useDisclosure();
-  const { closetId } = authStore((state) => state);
 
   return (
-    <Box
-      // border={"1px solid red"}
-      display="grid"
-      gap={4}
-    >
-      {/* if !categories */}
+    <Box display="grid" gap={4}>
       <img
         src="https://www.thecreativecurator.com/wp-content/uploads/2021/07/types-of-clothes-guide-to-clothing-types.jpg.webp"
         alt=""
@@ -57,11 +49,7 @@ const Closet: FC = () => {
         </Button>
       </ButtonGroup>
 
-      <CreateItem
-        closetId={closetId}
-        isOpen={isOpenitem}
-        onClose={onCloseItem}
-      />
+      <CreateItem isOpen={isOpenitem} onClose={onCloseItem} />
       <CreateOutfit isOpen={isOpenOutfit} onClose={onCloseOutfit} />
     </Box>
   );

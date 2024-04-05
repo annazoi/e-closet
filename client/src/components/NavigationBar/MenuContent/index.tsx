@@ -17,7 +17,7 @@ export const isLoggedInLinks: any = [
   {
     id: 2,
     name: "My Closet",
-    path: "/closet",
+    path: "/clothes",
     icon: <BiCloset />,
   },
   {

@@ -20,9 +20,6 @@ export class User {
 
   @Prop()
   password: string;
-
-  @Prop({ type: Types.ObjectId, ref: 'Closet' })
-  closetId?: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -19,13 +19,13 @@ import {
 import React from "react";
 import "./style.css";
 import { useQuery } from "react-query";
-import { getCloset } from "../../../services/closet";
 import { authStore } from "../../../store/authStore";
 import { Clothe } from "../../../interfaces/closet";
 import { ClotheCategories } from "../../../enums/clothes";
 import Canvas from "../../../components/ui/Canvas";
 import { CLOTHE_TYPES_ARRAY } from "../../../constants/clotheTypes";
 import Modal from "../../../components/ui/Modal";
+import { getClothes } from "../../../services/clothe";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -43,21 +43,15 @@ interface CategorizedClothes {
 }
 
 const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
-  const { userId, closetId } = authStore((state) => state);
+  const { userId } = authStore((state) => state);
   const [clothes, setClothes] = useState<CategorizedClothes>();
   const [selectedClothes, setSelectedClothes] = useState<any[]>([]);
 
-  useQuery({
-    queryKey: ["closet", closetId],
-    queryFn: () => {
-      return getCloset(closetId);
-    },
-    onSuccess: (data: any) => {
-      categorizeClothes(data);
-    },
-  });
+  const { data, isLoading } = useQuery("clothes", () =>
+    getClothes({ userId: userId })
+  );
 
-  // console.log("data", data);
+  console.log("data", data);
 
   const handleImage = (image: string) => {};
 
@@ -127,6 +121,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
         isOpen={isOpen}
         onClose={onClose}
         title="Create an item from your closet"
+        maxW="100%"
       >
         <ModalBody pb={6}>
           <HStack>

@@ -6,9 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/users/users.module';
 import { AwsS3Module } from './aws-s3/aws-s3.module';
-import { ClosetModule } from './api/closet/closet.module';
 import { OutfitsModule } from './api/outfits/outfits.module';
-import { Clothe } from './schemas/clothe.schema';
 import { ClothesModule } from './api/clothes/clothes.module';
 
 @Module({
@@ -26,7 +24,6 @@ import { ClothesModule } from './api/clothes/clothes.module';
     MongooseModule.forRoot(process.env.DB_CONNECTION),
     AuthModule,
     UserModule,
-    ClosetModule,
     AwsS3Module,
     OutfitsModule,
     ClothesModule,

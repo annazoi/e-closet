@@ -45,7 +45,7 @@ export class OutfitsService {
     try {
       const outfit = this.outfitModel
         .findById(id)
-        .populate('shirt', '-password');
+        .populate('userId shirt pant shoes', '-password');
       if (!outfit) {
         throw new ForbiddenException('No outfit found');
       }

@@ -16,7 +16,6 @@ export class ClothesService {
     userId: string,
     createClotheDto: CreateClotheDto,
     files: Express.Multer.File[],
-    // closetId: string,
   ) {
     try {
       const images = [];

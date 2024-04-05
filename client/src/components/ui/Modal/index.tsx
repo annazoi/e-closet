@@ -24,6 +24,7 @@ type ModalProps = {
   closeTitle?: string;
   actionTitleLoading?: boolean;
   isLoading?: boolean;
+  maxW?: string;
   alert?: boolean;
 } & React.ComponentProps<typeof ChakraModal>;
 
@@ -34,6 +35,7 @@ const Modal: FC<ModalProps> = ({
   title,
   isLoading,
   alert,
+  maxW,
   ...rest
 }) => {
   return (
@@ -44,7 +46,7 @@ const Modal: FC<ModalProps> = ({
       {...rest}
     >
       <ModalOverlay />
-      <ModalContent maxW="100%">
+      <ModalContent maxW={maxW}>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         {/* <ModalBody pb={6}>{rest.children}</ModalBody> */}

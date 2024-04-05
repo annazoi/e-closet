@@ -1,31 +1,31 @@
 import axios from "axios";
 import { API_URL } from "../constants/api";
-import { AddImages, Closet, Clothe, DeleteImages } from "../interfaces/closet";
+import { Clothe } from "../interfaces/closet";
 import { getAuthHeaders, getHeaders } from "./utils/utils";
-import { formatCloset } from "./formatter/closet";
+import { formatClothe } from "./formatter/clothe";
 
-export const createCloset = async (payload: Closet) => {
+export const createClothe = async (payload: Clothe) => {
   try {
     const response = await axios.post(
-      `${API_URL}/closet`,
+      `${API_URL}/clothes`,
       payload,
       getHeaders()
     );
-
     return response.data;
   } catch (error: any) {
     throw error.response.data;
   }
 };
 
-export const getCloset = async (closetId: string) => {
+export const getClothes = async (query: { [key: string]: string } = {}) => {
   try {
     const response = await axios.get(
-      `${API_URL}/closet/${closetId}`,
+      `${API_URL}/clothes/?${new URLSearchParams(query).toString()}`,
       getHeaders()
     );
-
-    const formattedData = formatCloset(response.data);
+    const formattedData = response.data.map((clothe: any) =>
+      formatClothe(clothe)
+    );
 
     return formattedData;
   } catch (error: any) {
@@ -33,25 +33,25 @@ export const getCloset = async (closetId: string) => {
   }
 };
 
-export const addClothes = async (payload: Clothe) => {
+export const getClothe = async (clotheId: string) => {
   try {
-    const { closetId, images, type, season } = payload;
-    const response = await axios.post(
-      `${API_URL}/closet/${closetId}/clothes`,
-      { images, type, season },
-
+    const response = await axios.get(
+      `${API_URL}/clothes/${clotheId}`,
       getHeaders()
     );
-    return response.data;
+
+    const formattedData = formatClothe(response.data);
+
+    return formattedData;
   } catch (error: any) {
     throw error.response.data;
   }
 };
 
-export const deleteClothe = async (closetId: string, imageId: string) => {
+export const deleteClothe = async (clotheId: string, imageId: string) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/closet/${closetId}/clothes/${imageId}`,
+      `${API_URL}/closet/${clotheId}/clothes/${imageId}`,
       getAuthHeaders()
     );
     return response.data;

@@ -7,21 +7,20 @@ import {
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
-import { addClothes } from "../../../services/closet";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
 import { Image } from "../../../interfaces/components";
 import { Clothe } from "../../../interfaces/closet";
 import Select from "../../../components/ui/Select";
 import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
+import { createClothe } from "../../../services/clothe";
 
 interface CreateItemProps {
-  closetId: string;
   isOpen: any;
   onClose: any;
 }
 
-const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
+const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
   const [selectedImages, setSelectedImages] = useState<Image[]>([]);
   const [season, setSeason] = useState<any[]>([]);
   const [category, setCategory] = useState("");
@@ -32,10 +31,10 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
     setSelectedImages([image]);
   };
 
-  const { mutate: addClothesMutate, isLoading: addPhotoIsLoading } =
+  const { mutate: createClotheMutate, isLoading: createClotheIsLoading } =
     useMutation({
-      mutationFn: ({ closetId, images, type, season }: Clothe) =>
-        addClothes({ closetId, images, type, season }),
+      mutationFn: ({ images, type, season }: Clothe) =>
+        createClothe({ images, type, season }),
     });
 
   const handleSave = () => {
@@ -44,15 +43,18 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
       toast({ title: "Please select an image", status: "error" });
       return;
     }
-    addClothesMutate(
+    createClotheMutate(
       {
-        closetId,
         images: selectedImages,
         type: category,
         season: season,
       },
       {
         onSuccess: () => {
+          toast({
+            title: "Item created successfully",
+            status: "success",
+          });
           onClose();
         },
         onError: (error) => {
@@ -76,9 +78,6 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
         isOpen={isOpen}
         onClose={onClose}
         title="Create an item from your closet"
-        // onClick={handleSave}
-        // isLoading={addPhotoIsLoading}
-        // alert={alert}
       >
         <ModalBody pb={6}>
           <div style={{ display: "grid", gap: "35px" }}>
@@ -98,7 +97,7 @@ const CreateItem: FC<CreateItemProps> = ({ closetId, isOpen, onClose }) => {
         <ModalFooter>
           <Button
             onClick={handleSave}
-            isLoading={addPhotoIsLoading}
+            isLoading={createClotheIsLoading}
             loadingText="Saving"
             bg={useColorModeValue("pink.300", "black")}
             w={"100%"}

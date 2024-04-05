@@ -6,7 +6,6 @@ import {
   PutObjectCommandOutput,
 } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
-import { ClosetModule } from 'src/api/closet/closet.module';
 
 @Injectable()
 export class S3Service {

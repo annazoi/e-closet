@@ -6,18 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/schemas/user.schema';
 import { CreateJwtServiceModule } from './jwt/jwt.module';
 import { S3Service } from 'src/aws-s3/aws-s3.service';
-import { ClosetSchema } from 'src/schemas/closet.schema';
-import { ClosetService } from '../closet/closet.service';
 
 @Module({
   imports: [
     CreateJwtServiceModule,
-    MongooseModule.forFeature([
-      { name: 'User', schema: UserSchema },
-      { name: 'Closet', schema: ClosetSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, S3Service, ClosetService],
+  providers: [AuthService, JwtStrategy, S3Service],
 })
 export class AuthModule {}

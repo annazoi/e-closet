@@ -16,8 +16,9 @@ export interface DeleteImages {
 }
 
 export interface Clothe {
-  closetId: string;
+  id?: string;
   images: Image[];
   type: string;
   season: string[];
+  [key: string]: any;
 }
