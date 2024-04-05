@@ -29,9 +29,11 @@ export class OutfitsService {
     }
   }
 
-  findAll(query: any) {
+  async findAll(query: any) {
     try {
-      const outfits = this.outfitModel.find({ ...query });
+      const outfits = await this.outfitModel
+        .find({ ...query })
+        .populate('userId shirt pant shoes', '-password');
       if (!outfits) {
         throw new ForbiddenException('No outfits found');
       }
@@ -41,9 +43,9 @@ export class OutfitsService {
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     try {
-      const outfit = this.outfitModel
+      const outfit = await this.outfitModel
         .findById(id)
         .populate('userId shirt pant shoes', '-password');
       if (!outfit) {

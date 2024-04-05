@@ -10,7 +10,7 @@ import ImagePicker from "../../../components/ui/ImagePicker";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
 import { Image } from "../../../interfaces/components";
-import { Clothe } from "../../../interfaces/closet";
+import { Clothe, NewClothe } from "../../../interfaces/clothe";
 import Select from "../../../components/ui/Select";
 import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
 import { createClothe } from "../../../services/clothe";
@@ -33,7 +33,7 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
 
   const { mutate: createClotheMutate, isLoading: createClotheIsLoading } =
     useMutation({
-      mutationFn: ({ images, type, season }: Clothe) =>
+      mutationFn: ({ images, type, season }: NewClothe) =>
         createClothe({ images, type, season }),
     });
 

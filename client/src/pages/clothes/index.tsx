@@ -11,6 +11,9 @@ import { GiClothes } from "react-icons/gi";
 import CreateItem from "./CreateItem";
 
 import CreateOutfit from "./CreateOutfit";
+import { authStore } from "../../store/authStore";
+import { getOutfits } from "../../services/outfit";
+import { useQuery } from "react-query";
 
 const Closet: FC = () => {
   const {
@@ -23,6 +26,11 @@ const Closet: FC = () => {
     onOpen: onOpenOutfit,
     onClose: onCloseOutfit,
   } = useDisclosure();
+
+  const { userId } = authStore((state) => state);
+
+  const { data } = useQuery("outfits", () => getOutfits({ userId: userId }));
+  console.log(data);
 
   return (
     <Box display="grid" gap={4}>

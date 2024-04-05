@@ -1,15 +1,11 @@
-import { Clothe } from "../../interfaces/closet";
+import { Clothe } from "../../interfaces/clothe";
 
-export const formatClothe = (data: any): Clothe | null => {
-  if (typeof data === "string" || !data) {
-    return null;
-  } else {
-    return {
-      id: data._id,
-      images: data.images,
-      type: data.type,
-      season: data.season,
-      userId: data.userId,
-    };
-  }
+export const formatClothe = (data: any): Clothe => {
+  return {
+    id: data._id,
+    images: data.images,
+    type: data.type,
+    season: data.season,
+    userId: data.userId,
+  };
 };

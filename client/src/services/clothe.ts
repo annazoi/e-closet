@@ -1,10 +1,10 @@
 import axios from "axios";
 import { API_URL } from "../constants/api";
-import { Clothe } from "../interfaces/closet";
+import { NewClothe } from "../interfaces/clothe";
 import { getAuthHeaders, getHeaders } from "./utils/utils";
 import { formatClothe } from "./formatter/clothe";
 
-export const createClothe = async (payload: Clothe) => {
+export const createClothe = async (payload: NewClothe) => {
   try {
     const response = await axios.post(
       `${API_URL}/clothes`,

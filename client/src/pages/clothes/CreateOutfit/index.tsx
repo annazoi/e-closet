@@ -15,17 +15,20 @@ import {
   Button,
   useColorModeValue,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import "./style.css";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { authStore } from "../../../store/authStore";
-import { Clothe } from "../../../interfaces/closet";
+import { Clothe } from "../../../interfaces/clothe";
 import { ClotheCategories } from "../../../enums/clothes";
 import Canvas from "../../../components/ui/Canvas";
 import { CLOTHE_TYPES_ARRAY } from "../../../constants/clotheTypes";
 import Modal from "../../../components/ui/Modal";
 import { getClothes } from "../../../services/clothe";
+import { NewOutfit } from "../../../interfaces/outfit";
+import { createOutfit } from "../../../services/outfit";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -45,68 +48,46 @@ interface CategorizedClothes {
 const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
   const { userId } = authStore((state) => state);
   const [clothes, setClothes] = useState<CategorizedClothes>();
-  const [selectedClothes, setSelectedClothes] = useState<any[]>([]);
-
-  const { data, isLoading } = useQuery("clothes", () =>
-    getClothes({ userId: userId })
-  );
-
-  console.log("data", data);
-
-  const handleImage = (image: string) => {};
+  const [selectedClothes, setSelectedClothes] = useState<Clothe[]>([]);
 
   const [boxWidth, setBoxWidth] = React.useState(400);
   const [boxHeight, setBoxHeight] = React.useState(400);
-
   const [topBoxWidth, setTopBoxWidth] = React.useState(400);
   const [topBoxHeight, setTopBoxHeight] = React.useState(400);
 
-  const onResize = (
-    event: React.SyntheticEvent,
-    { size }: { size: { width: number; height: number } }
-  ) => {
-    // console.log("Resized:", size);
-    setBoxWidth(size.width);
-    setBoxHeight(size.height);
-  };
+  const toast = useToast();
 
-  const onMiddleResize = (
-    event: React.SyntheticEvent,
-    { size }: { size: { width: number; height: number } }
-  ) => {
-    // console.log("Resized:", size);
-    setTopBoxWidth(size.width);
-    setTopBoxHeight(size.height);
-  };
+  useQuery(
+    "clothes",
+    () => getClothes({ userId: userId }),
 
-  const categorizeClothes = (data: any) => {
-    let tempClothes: { [key: string]: any[] } = {};
-
-    for (let i = 0; i < CLOTHE_TYPES_ARRAY.length; i++) {
-      tempClothes[CLOTHE_TYPES_ARRAY[i]] = [];
-      for (let j = 0; j < data?.clothes.length; j++) {
-        if (CLOTHE_TYPES_ARRAY[i] === data?.clothes[j].type) {
-          tempClothes[CLOTHE_TYPES_ARRAY[i]].push(data?.clothes[j]);
-        }
-      }
+    {
+      onSuccess: (data) => {
+        categorizeClothes(data);
+      },
     }
-    setClothes(tempClothes);
-  };
+  );
+
+  const { mutate: CreateOutfitMutate, isLoading: CreateOutfitIsLoading } =
+    useMutation({
+      mutationFn: ({ shirt, pant, shoes }: NewOutfit) =>
+        createOutfit({ shirt, pant, shoes }),
+    });
 
   useEffect(() => {
-    console.log("clothes", clothes);
+    // console.log("clothes", clothes);
   }, [clothes]);
 
-  const handleSelectedClothes = (clothe: any) => {
+  const handleSelectedClothes = (clothe: Clothe) => {
     const existingClothe = selectedClothes.find(
-      (item) => item._id === clothe._id
+      (item) => item.id === clothe.id
     );
     const existingType = selectedClothes.find(
       (item) => item.type === clothe.type
     );
     if (existingClothe) {
       setSelectedClothes(
-        selectedClothes.filter((item) => item._id !== clothe._id)
+        selectedClothes.filter((item) => item.id !== clothe.id)
       );
       return;
     }
@@ -115,6 +96,68 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
     }
     setSelectedClothes([...selectedClothes, clothe]);
   };
+
+  const categorizeClothes = (data: Clothe) => {
+    let tempClothes: { [key: string]: any[] } = {};
+
+    for (let i = 0; i < CLOTHE_TYPES_ARRAY.length; i++) {
+      tempClothes[CLOTHE_TYPES_ARRAY[i]] = [];
+      for (let j = 0; j < data?.length; j++) {
+        if (CLOTHE_TYPES_ARRAY[i] === data[j]?.type) {
+          tempClothes[CLOTHE_TYPES_ARRAY[i]].push(data[j]);
+        }
+      }
+    }
+    setClothes(tempClothes);
+  };
+
+  const handleNewOutfit = () => {
+    CreateOutfitMutate(
+      {
+        shirt: selectedClothes.find(
+          (item: any) => item.type === ClotheCategories.TOP_AND_T_SHIRTS
+        )?.id as string,
+        pant: selectedClothes.find(
+          (item: any) => item.type === ClotheCategories.BOTTOMS_AND_LEGGINGS
+        )?.id as string,
+        shoes: selectedClothes.find(
+          (item: any) => item.type === ClotheCategories.SHOES_AND_SOCKS
+        )?.id as string,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Outfit created successfully",
+            status: "success",
+          });
+          onClose();
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
+  };
+  console.log("selectedClothes", selectedClothes);
+
+  // const onResize = (
+  //   event: React.SyntheticEvent,
+  //   { size }: { size: { width: number; height: number } }
+  // ) => {
+  //   // console.log("Resized:", size);
+  //   setBoxWidth(size.width);
+  //   setBoxHeight(size.height);
+  // };
+
+  // const onMiddleResize = (
+  //   event: React.SyntheticEvent,
+  //   { size }: { size: { width: number; height: number } }
+  // ) => {
+  //   // console.log("Resized:", size);
+  //   setTopBoxWidth(size.width);
+  //   setTopBoxHeight(size.height);
+  // };
+
   return (
     <>
       <Modal
@@ -138,7 +181,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
                     <HStack spacing={"20px"}>
                       {clothes &&
                         clothes[type] &&
-                        clothes[type].map((clothe: any, index: number) => (
+                        clothes[type].map((clothe: Clothe, index: number) => (
                           <div key={index}>
                             {clothe.images.map((image: any, index: number) => (
                               <Image
@@ -150,7 +193,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
                                 onClick={() => handleSelectedClothes(clothe)}
                                 border={
                                   selectedClothes.find(
-                                    (item: any) => item._id === clothe._id
+                                    (item: any) => item.id === clothe.id
                                   )
                                     ? "2px solid red"
                                     : ""
@@ -245,8 +288,8 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            // onClick={handleSave}
-            // isLoading={addPhotoIsLoading}
+            onClick={handleNewOutfit}
+            isLoading={CreateOutfitIsLoading}
             loadingText="Saving"
             bg={useColorModeValue("pink.300", "black")}
             // w={"100%"}
