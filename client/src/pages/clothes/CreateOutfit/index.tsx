@@ -16,6 +16,11 @@ import {
   useColorModeValue,
   VStack,
   useToast,
+  Grid,
+  Input,
+  Flex,
+  Text,
+  Textarea,
 } from "@chakra-ui/react";
 import React from "react";
 import "./style.css";
@@ -49,11 +54,8 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
   const { userId } = authStore((state) => state);
   const [clothes, setClothes] = useState<CategorizedClothes>();
   const [selectedClothes, setSelectedClothes] = useState<Clothe[]>([]);
-
-  const [boxWidth, setBoxWidth] = React.useState(400);
-  const [boxHeight, setBoxHeight] = React.useState(400);
-  const [topBoxWidth, setTopBoxWidth] = React.useState(400);
-  const [topBoxHeight, setTopBoxHeight] = React.useState(400);
+  const [colorScheme, setColorScheme] = useState("");
+  const [notes, setNotes] = useState("");
 
   const toast = useToast();
 
@@ -70,7 +72,8 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
 
   const { mutate: CreateOutfitMutate, isLoading: CreateOutfitIsLoading } =
     useMutation({
-      mutationFn: (clothes: NewOutfit) => createOutfit(clothes),
+      mutationFn: ({ clothes, colorScheme, notes }: NewOutfit) =>
+        createOutfit({ clothes, colorScheme, notes }),
     });
 
   useEffect(() => {
@@ -114,6 +117,8 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
     CreateOutfitMutate(
       {
         clothes: selectedClothes.map((item) => item.id),
+        colorScheme: colorScheme,
+        notes: notes,
       },
       {
         onSuccess: () => {
@@ -130,23 +135,13 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
     );
   };
 
-  // const onResize = (
-  //   event: React.SyntheticEvent,
-  //   { size }: { size: { width: number; height: number } }
-  // ) => {
-  //   // console.log("Resized:", size);
-  //   setBoxWidth(size.width);
-  //   setBoxHeight(size.height);
-  // };
+  const handleColorScheme = (e: any) => {
+    setColorScheme(e.target.value);
+  };
 
-  // const onMiddleResize = (
-  //   event: React.SyntheticEvent,
-  //   { size }: { size: { width: number; height: number } }
-  // ) => {
-  //   // console.log("Resized:", size);
-  //   setTopBoxWidth(size.width);
-  //   setTopBoxHeight(size.height);
-  // };
+  const handleNotes = (e: any) => {
+    setNotes(e.target.value);
+  };
 
   return (
     <>
@@ -158,45 +153,62 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
       >
         <ModalBody pb={6}>
           <HStack>
-            <Accordion defaultIndex={[0]} allowMultiple w={"100%"}>
-              {CLOTHE_TYPES_ARRAY.map((type: string, index: number) => (
-                <AccordionItem key={index}>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      {type}
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>
-                    <HStack spacing={"20px"}>
-                      {clothes &&
-                        clothes[type] &&
-                        clothes[type].map((clothe: Clothe, index: number) => (
-                          <div key={index}>
-                            {clothe.images.map((image: any, index: number) => (
-                              <Image
-                                key={index}
-                                boxSize="100%"
-                                objectFit="cover"
-                                src={image.file}
-                                alt=""
-                                onClick={() => handleSelectedClothes(clothe)}
-                                border={
-                                  selectedClothes.find(
-                                    (item: any) => item.id === clothe.id
-                                  )
-                                    ? "2px solid red"
-                                    : ""
-                                }
-                              />
-                            ))}
-                          </div>
-                        ))}
-                    </HStack>
-                  </AccordionPanel>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <Grid>
+              <Accordion defaultIndex={[0]} allowMultiple w={"100%"} pb={6}>
+                {CLOTHE_TYPES_ARRAY.map((type: string, index: number) => (
+                  <AccordionItem key={index}>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left">
+                        {type}
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel pb={4}>
+                      <HStack spacing={"20px"}>
+                        {clothes &&
+                          clothes[type] &&
+                          clothes[type].map((clothe: Clothe, index: number) => (
+                            <div key={index}>
+                              {clothe.images.map(
+                                (image: any, index: number) => (
+                                  <Image
+                                    key={index}
+                                    boxSize="100%"
+                                    objectFit="cover"
+                                    src={image.file}
+                                    alt=""
+                                    onClick={() =>
+                                      handleSelectedClothes(clothe)
+                                    }
+                                    border={
+                                      selectedClothes.find(
+                                        (item: any) => item.id === clothe.id
+                                      )
+                                        ? "2px solid red"
+                                        : ""
+                                    }
+                                  />
+                                )
+                              )}
+                            </div>
+                          ))}
+                      </HStack>
+                    </AccordionPanel>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+              <Text fontSize={12}>Enter Color Scheme</Text>
+              <Input
+                placeholder="total black, colorfull..."
+                onChange={handleColorScheme}
+              />
+              <Textarea
+                placeholder="Add notes..."
+                mt={4}
+                onChange={handleNotes}
+              />
+            </Grid>
+
             <div
               style={{
                 width: "100%",
@@ -218,61 +230,6 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
               )}
 
               {/* <Canvas image={} /> */}
-              {/* <div>
-        <div>
-        <Resizable
-        width={boxWidth}
-        height={boxHeight}
-        minConstraints={[100, 100]}
-        // maxConstraints={[400, 400]}
-        onResize={onResize}
-          >
-          <div
-          style={{
-            width: boxWidth,
-            height: boxHeight,
-            marginLeft: "85px",
-          }}
-          className="resizable-box"
-          >
-          {topImage && (
-            <Image
-            // boxSize="100px"
-            // objectFit="cover"
-            src={topImage}
-            alt=""
-            />
-            )}
-            </div>
-            </Resizable>
-            </div>
-            </div>
-            
-            <Resizable
-            width={topBoxWidth}
-            height={topBoxHeight}
-            minConstraints={[100, 100]}
-            // maxConstraints={[400, 400]}
-            onResize={onMiddleResize}
-            >
-            <div
-            // style={{ width: boxWidth, height: boxHeight }}
-            style={{
-              width: topBoxWidth,
-              height: topBoxHeight,
-        }}
-        className="resizable-box"
-        >
-        {middleImage && (
-          <Image
-          // boxSize="100px"
-          // objectFit="cover"
-          src={middleImage}
-          alt=""
-          />
-          )}
-          </div>
-        </Resizable> */}
             </div>
           </HStack>
         </ModalBody>

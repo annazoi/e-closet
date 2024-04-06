@@ -42,3 +42,15 @@ export const getOutfit = async (id: string) => {
     throw error.response.data;
   }
 };
+
+export const deleteOutfit = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/outfits/${id}`,
+      getHeaders()
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};

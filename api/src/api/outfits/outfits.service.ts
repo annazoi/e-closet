@@ -14,7 +14,7 @@ export class OutfitsService {
   ) {}
   async create(userId: string, createOutfitDto: CreateOutfitDto) {
     try {
-      // const { clothes, colorSchema, rating, notes } = createOutfitDto;
+      // const { clothes, colorScheme, rating, notes } = createOutfitDto;
       const clothesObj = createOutfitDto.clothes.map((clothe) => ({ clothe }));
       const outfit = new this.outfitModel({
         ...createOutfitDto,
@@ -51,6 +51,18 @@ export class OutfitsService {
       const outfit = await this.outfitModel
         .findById(id)
         .populate('userId clothes.clothe', '-password');
+      if (!outfit) {
+        throw new ForbiddenException('No outfit found');
+      }
+      return outfit;
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      const outfit = await this.outfitModel.findByIdAndDelete(id);
       if (!outfit) {
         throw new ForbiddenException('No outfit found');
       }

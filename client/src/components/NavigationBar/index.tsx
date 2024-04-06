@@ -26,17 +26,33 @@ const NavigationBar = (props: any) => {
         left={0}
         w={"100%"}
         h={"50px"}
+        boxShadow={"0 2px 5px 0px rgba(0,0,0,0.2)"}
       >
         <IconButton
           bg={useColorModeValue("pink.200", "gray.800")}
           display={{ base: "flex", md: "none" }}
           onClick={onOpen}
-          variant="outline"
           aria-label="open menu"
-          icon={<CiMenuBurger size={20} />}
+          icon={
+            <CiMenuBurger
+              size={20}
+              color={useColorModeValue("white", "gray")}
+            />
+          }
           mt={1}
           ml={1}
         ></IconButton>
+        <Heading
+          color={useColorModeValue("pink.300", "white")}
+          display={{ base: "none", md: "block" }}
+          fontStyle={"Helvetica"}
+          textAlign={"start"}
+          mt={1}
+          ml={12}
+          fontWeight={"bold"}
+        >
+          e-Closet
+        </Heading>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -60,17 +76,6 @@ const NavigationBar = (props: any) => {
           md: "block",
         }}
       >
-        <Heading
-          style={{
-            textAlign: "center",
-            padding: "10px",
-            fontSize: "30px",
-          }}
-          color={useColorModeValue("pink.300", "white")}
-          fontStyle={"Helvetica"}
-        >
-          e-Closet
-        </Heading>
         <div style={{ padding: "10px" }}>
           <MenuContent />
         </div>

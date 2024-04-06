@@ -6,7 +6,7 @@ export class CreateOutfitDto {
 
   @IsOptional()
   @IsString()
-  colorSchema: string;
+  colorScheme: string;
 
   @IsOptional()
   @IsString()

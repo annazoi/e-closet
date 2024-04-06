@@ -49,4 +49,8 @@ export class OutfitsController {
   findOne(@Param('id') id: string) {
     return this.outfitsService.findOne(id);
   }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.outfitsService.remove(id);
+  }
 }

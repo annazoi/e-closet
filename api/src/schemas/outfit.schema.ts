@@ -22,7 +22,7 @@ export class Outfit {
   clothes: OutfitClothe[];
 
   @Prop()
-  colorSchema?: string;
+  colorScheme?: string;
 
   @Prop()
   rating?: number;
