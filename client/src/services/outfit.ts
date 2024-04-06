@@ -23,10 +23,20 @@ export const getOutfits = async (query: { [key: string]: string } = {}) => {
       `${API_URL}/outfits/?${new URLSearchParams(query).toString()}`,
       getHeaders()
     );
-      
+
     const formattedData = response.data.map((outfit: any) =>
       formatOutfit(outfit)
     );
+    return formattedData;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const getOutfit = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/outfits/${id}`);
+    const formattedData = formatOutfit(response.data);
     return formattedData;
   } catch (error: any) {
     throw error.response.data;

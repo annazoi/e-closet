@@ -1,5 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
+import { Clothe } from './clothe.schema';
+
+@Schema({
+  timestamps: true,
+})
+export class OutfitClothe {
+  @Prop({ type: Types.ObjectId, ref: 'Clothe' })
+  clothe: Types.ObjectId;
+}
+export const OutfitClotheSchema = SchemaFactory.createForClass(OutfitClothe);
 
 @Schema({
   timestamps: true,
@@ -8,17 +18,8 @@ export class Outfit {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Clothe' })
-  head?: Types.ObjectId;
-
-  @Prop({ type: Types.ObjectId, ref: 'Clothe' })
-  shirt: Types.ObjectId;
-
-  @Prop({ type: Types.ObjectId, ref: 'Clothe' })
-  pant: Types.ObjectId;
-
-  @Prop({ type: Types.ObjectId, ref: 'Clothe' })
-  shoes: Types.ObjectId;
+  @Prop({ type: [OutfitClotheSchema], required: true })
+  clothes: OutfitClothe[];
 
   @Prop()
   colorSchema?: string;

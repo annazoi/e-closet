@@ -70,8 +70,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
 
   const { mutate: CreateOutfitMutate, isLoading: CreateOutfitIsLoading } =
     useMutation({
-      mutationFn: ({ shirt, pant, shoes }: NewOutfit) =>
-        createOutfit({ shirt, pant, shoes }),
+      mutationFn: (clothes: NewOutfit) => createOutfit(clothes),
     });
 
   useEffect(() => {
@@ -114,15 +113,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
   const handleNewOutfit = () => {
     CreateOutfitMutate(
       {
-        shirt: selectedClothes.find(
-          (item: any) => item.type === ClotheCategories.TOP_AND_T_SHIRTS
-        )?.id as string,
-        pant: selectedClothes.find(
-          (item: any) => item.type === ClotheCategories.BOTTOMS_AND_LEGGINGS
-        )?.id as string,
-        shoes: selectedClothes.find(
-          (item: any) => item.type === ClotheCategories.SHOES_AND_SOCKS
-        )?.id as string,
+        clothes: selectedClothes.map((item) => item.id),
       },
       {
         onSuccess: () => {
@@ -138,7 +129,6 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
       }
     );
   };
-  console.log("selectedClothes", selectedClothes);
 
   // const onResize = (
   //   event: React.SyntheticEvent,

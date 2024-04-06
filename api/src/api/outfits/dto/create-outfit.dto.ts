@@ -1,18 +1,8 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class CreateOutfitDto {
-  @IsOptional()
-  @IsString()
-  head: string;
-
-  @IsString()
-  shirt: string;
-
-  @IsString()
-  pant: string;
-
-  @IsString()
-  shoes: string;
+  @IsArray()
+  clothes: string[];
 
   @IsOptional()
   @IsString()

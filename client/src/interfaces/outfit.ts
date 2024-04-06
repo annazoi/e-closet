@@ -1,10 +1,7 @@
 import { Clothe } from "./clothe";
 
 export interface NewOutfit {
-  head?: string;
-  shirt: string;
-  pant: string;
-  shoes: string;
+  clothes: string[];
   colorSchema?: string;
   rating?: number;
   notes?: string;
@@ -12,10 +9,7 @@ export interface NewOutfit {
 
 export interface Outfit {
   id: string;
-  head?: Clothe;
-  shirt: Clothe;
-  pant: Clothe;
-  shoes: Clothe;
+  clothes: Clothe[];
   colorSchema?: string;
   rating?: number;
   notes?: string;

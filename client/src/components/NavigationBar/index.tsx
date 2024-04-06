@@ -19,8 +19,9 @@ const NavigationBar = (props: any) => {
   return (
     <>
       <Box
-        bg={useColorModeValue("pink.300", "gray.800")}
+        bg={useColorModeValue("pink.100", "gray.800")}
         position={"fixed"}
+        zIndex={"1000"}
         top={0}
         left={0}
         w={"100%"}
