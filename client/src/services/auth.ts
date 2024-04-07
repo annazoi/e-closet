@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../constants/api";
 import { SignUp, SignIn } from "../interfaces/user";
-import { decodeToken } from "../lib/token";
+import { decodeToken } from "../utils/token";
 
 export const signUp = async (payload: SignUp) => {
   try {

@@ -15,4 +15,7 @@ export class CreateOutfitDto {
   @IsOptional()
   @IsString()
   notes: string;
+
+  @IsString()
+  type: string;
 }

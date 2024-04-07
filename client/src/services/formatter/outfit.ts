@@ -1,4 +1,5 @@
 import { Outfit } from "../../interfaces/outfit";
+import { formatUser } from "./user";
 
 export const formatOutfit = (data: any): Outfit => {
   return {
@@ -7,6 +8,7 @@ export const formatOutfit = (data: any): Outfit => {
     colorScheme: data.colorScheme,
     rating: data.rating,
     notes: data.notes,
-    userId: data.userId,
+    type: data.type,
+    userId: formatUser(data.userId),
   };
 };

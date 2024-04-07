@@ -1,4 +1,5 @@
 import { Image } from "./components";
+import { User } from "./user";
 
 export interface NewClothe {
   images: Image[];
@@ -8,10 +9,10 @@ export interface NewClothe {
 
 export interface Clothe {
   id: string;
-  images: Image[];
+  images: ClotheImage[];
   type: string;
   season: string[];
-  [key: string]: any;
+  user: User;
 }
 
 export interface AddImages {
@@ -22,4 +23,9 @@ export interface AddImages {
 export interface DeleteImages {
   closetId: string;
   images: string[];
+}
+
+export interface ClotheImage {
+  id: string;
+  file: string;
 }

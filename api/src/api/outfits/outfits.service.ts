@@ -14,7 +14,7 @@ export class OutfitsService {
   ) {}
   async create(userId: string, createOutfitDto: CreateOutfitDto) {
     try {
-      // const { clothes, colorScheme, rating, notes } = createOutfitDto;
+      // const { clothes, colorScheme, rating, notes, type } = createOutfitDto;
       const clothesObj = createOutfitDto.clothes.map((clothe) => ({ clothe }));
       const outfit = new this.outfitModel({
         ...createOutfitDto,

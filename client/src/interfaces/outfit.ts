@@ -5,6 +5,7 @@ export interface NewOutfit {
   colorScheme?: string;
   rating?: number;
   notes?: string;
+  type: string;
 }
 
 export interface Outfit {
@@ -13,5 +14,6 @@ export interface Outfit {
   colorScheme?: string;
   rating?: number;
   notes?: string;
+  type: string;
   [key: string]: any;
 }

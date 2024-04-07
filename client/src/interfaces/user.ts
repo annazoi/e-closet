@@ -17,5 +17,4 @@ export interface User {
   email: string;
   age?: number;
   avatar?: string;
-  closetId?: string;
 }

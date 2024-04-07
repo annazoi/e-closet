@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../constants/api";
-import { NewClothe } from "../interfaces/clothe";
-import { getAuthHeaders, getHeaders } from "./utils/utils";
+import { Clothe, NewClothe } from "../interfaces/clothe";
+import { getAuthHeaders, getHeaders } from "../utils/headers";
 import { formatClothe } from "./formatter/clothe";
 
 export const createClothe = async (payload: NewClothe) => {
@@ -17,7 +17,9 @@ export const createClothe = async (payload: NewClothe) => {
   }
 };
 
-export const getClothes = async (query: { [key: string]: string } = {}) => {
+export const getClothes = async (
+  query: { [key: string]: string } = {}
+): Promise<Clothe[]> => {
   try {
     const response = await axios.get(
       `${API_URL}/clothes/?${new URLSearchParams(query).toString()}`,
@@ -33,7 +35,7 @@ export const getClothes = async (query: { [key: string]: string } = {}) => {
   }
 };
 
-export const getClothe = async (clotheId: string) => {
+export const getClothe = async (clotheId: string): Promise<Clothe> => {
   try {
     const response = await axios.get(
       `${API_URL}/clothes/${clotheId}`,

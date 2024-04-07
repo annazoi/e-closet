@@ -17,7 +17,6 @@ import {
   VStack,
   useToast,
   Grid,
-  Input,
   Flex,
   Text,
   Textarea,
@@ -34,6 +33,7 @@ import Modal from "../../../components/ui/Modal";
 import { getClothes } from "../../../services/clothe";
 import { NewOutfit } from "../../../interfaces/outfit";
 import { createOutfit } from "../../../services/outfit";
+import Input from "../../../components/ui/Input";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -56,6 +56,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
   const [selectedClothes, setSelectedClothes] = useState<Clothe[]>([]);
   const [colorScheme, setColorScheme] = useState("");
   const [notes, setNotes] = useState("");
+  const [type, setType] = useState("");
 
   const toast = useToast();
 
@@ -64,7 +65,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
     () => getClothes({ userId: userId }),
 
     {
-      onSuccess: (data) => {
+      onSuccess: (data: Clothe[]) => {
         categorizeClothes(data);
       },
     }
@@ -72,8 +73,8 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
 
   const { mutate: CreateOutfitMutate, isLoading: CreateOutfitIsLoading } =
     useMutation({
-      mutationFn: ({ clothes, colorScheme, notes }: NewOutfit) =>
-        createOutfit({ clothes, colorScheme, notes }),
+      mutationFn: ({ clothes, colorScheme, notes, type }: NewOutfit) =>
+        createOutfit({ clothes, colorScheme, notes, type }),
     });
 
   useEffect(() => {
@@ -99,7 +100,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
     setSelectedClothes([...selectedClothes, clothe]);
   };
 
-  const categorizeClothes = (data: Clothe) => {
+  const categorizeClothes = (data: Clothe[]) => {
     let tempClothes: { [key: string]: any[] } = {};
 
     for (let i = 0; i < CLOTHE_TYPES_ARRAY.length; i++) {
@@ -119,6 +120,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
         clothes: selectedClothes.map((item) => item.id),
         colorScheme: colorScheme,
         notes: notes,
+        type: type,
       },
       {
         onSuccess: () => {
@@ -141,6 +143,10 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
 
   const handleNotes = (e: any) => {
     setNotes(e.target.value);
+  };
+
+  const handleType = (e: any) => {
+    setType(e.target.value);
   };
 
   return (
@@ -197,8 +203,15 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
                   </AccordionItem>
                 ))}
               </Accordion>
-              <Text fontSize={12}>Enter Color Scheme</Text>
               <Input
+                placeholder="Enter Outfit Type"
+                onChange={handleType}
+                label="Outfit Type"
+                required
+              />
+
+              <Input
+                label="Color Scheme"
                 placeholder="total black, colorfull..."
                 onChange={handleColorScheme}
               />

@@ -29,5 +29,8 @@ export class Outfit {
 
   @Prop()
   notes?: string;
+
+  @Prop()
+  type: string;
 }
 export const OutfitSchema = SchemaFactory.createForClass(Outfit);

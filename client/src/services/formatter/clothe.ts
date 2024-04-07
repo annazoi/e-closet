@@ -1,4 +1,5 @@
 import { Clothe } from "../../interfaces/clothe";
+import { formatUser } from "./user";
 
 export const formatClothe = (data: any): Clothe => {
   return {
@@ -6,6 +7,6 @@ export const formatClothe = (data: any): Clothe => {
     images: data.images,
     type: data.type,
     season: data.season,
-    userId: data.userId,
+    user: formatUser(data.userId),
   };
 };

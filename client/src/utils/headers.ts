@@ -1,4 +1,4 @@
-import { getAuthState } from "../../store/authStore";
+import { getAuthState } from "../store/authStore";
 
 export const createParams = (params: { [key: string]: string }) => {
   return new URLSearchParams(params).toString();

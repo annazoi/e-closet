@@ -21,7 +21,7 @@ import {
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { motion, useAnimation, useMotionValue } from "framer-motion";
-import percentage from "../../../services/utils/percentage";
+import percentage from "../../../utils/percentage";
 import useBoundingRect from "../../../hooks/useBoundingRect";
 const MotionFlex = motion(Flex);
 
@@ -32,7 +32,12 @@ const transitionProps = {
   mass: 3,
 };
 
-const ChakraCarousel = ({ children, gap }: any) => {
+interface IChakraCarousel {
+  children: any;
+  gap: any;
+}
+
+const ChakraCarousel = ({ children, gap }: IChakraCarousel) => {
   const [trackIsActive, setTrackIsActive] = useState(false);
   const [multiplier, setMultiplier] = useState(0.35);
   const [sliderWidth, setSliderWidth] = useState(0);
