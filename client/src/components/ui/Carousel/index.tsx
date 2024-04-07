@@ -36,7 +36,8 @@ const Carousel: FC<CarouselProps> = ({ images }) => {
   return (
     <Box
       position={"relative"}
-      height={"600px"}
+      // height={"600px"}
+      height={"100%"}
       width={"full"}
       overflow={"hidden"}
     >
@@ -50,58 +51,52 @@ const Carousel: FC<CarouselProps> = ({ images }) => {
         type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       />
-      <IconButton
-        aria-label="left-arrow"
-        variant="ghost"
-        position="absolute"
-        left={side}
-        top={top}
-        transform={"translate(0%, -50%)"}
-        zIndex={2}
-        onClick={() => slider?.slickPrev()}
-      >
-        <BiLeftArrowAlt size="40px" />
-      </IconButton>
-      <IconButton
-        aria-label="right-arrow"
-        variant="ghost"
-        position="absolute"
-        right={side}
-        top={top}
-        transform={"translate(0%, -50%)"}
-        zIndex={2}
-        onClick={() => slider?.slickNext()}
-      >
-        <BiRightArrowAlt size="40px" />
-      </IconButton>
+      {images.length > 1 ? (
+        <>
+          <IconButton
+            aria-label="left-arrow"
+            variant="ghost"
+            position="absolute"
+            left={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            onClick={() => slider?.slickPrev()}
+          >
+            <BiLeftArrowAlt size="40px" />
+          </IconButton>
+          <IconButton
+            aria-label="right-arrow"
+            variant="ghost"
+            position="absolute"
+            right={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            onClick={() => slider?.slickNext()}
+          >
+            <BiRightArrowAlt size="40px" />
+          </IconButton>
+        </>
+      ) : null}
+
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {images?.map((card: string, index: number) => (
           <Box
             key={index}
-            height={"6xl"}
+            // height={"6xl"}
+            h={"200px"}
             position="relative"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
             backgroundImage={`url(${card})`}
           >
-            <Container size="container.lg" height="600px" position="relative">
-              {/* <Stack
-                spacing={6}
-                w={"full"}
-                maxW={"lg"}
-                position="absolute"
-                top="50%"
-                transform="translate(0, -50%)"
-              >
-                <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
-                  {card.title}
-                </Heading>
-                <Text fontSize={{ base: "md", lg: "lg" }} color="GrayText">
-                  {card.text}
-                </Text>
-              </Stack> */}
-            </Container>
+            <Container
+              size="container.lg"
+              height="600px"
+              position="relative"
+            ></Container>
           </Box>
         ))}
       </Slider>

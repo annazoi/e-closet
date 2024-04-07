@@ -2,9 +2,10 @@ import { Image } from "./components";
 import { User } from "./user";
 
 export interface NewClothe {
-  images: Image[];
+  images: File[];
   type: string;
   season: string[];
+  notes?: string;
 }
 
 export interface Clothe {
@@ -13,6 +14,7 @@ export interface Clothe {
   type: string;
   season: string[];
   user: User;
+  notes?: string;
 }
 
 export interface AddImages {

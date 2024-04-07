@@ -76,7 +76,7 @@ const NavigationBar = (props: any) => {
           md: "block",
         }}
       >
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: "10px", marginTop: "60px" }}>
           <MenuContent />
         </div>
       </Box>

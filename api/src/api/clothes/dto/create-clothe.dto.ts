@@ -10,4 +10,7 @@ export class CreateClotheDto {
 
   @IsOptional()
   images: Express.Multer.File[];
+
+  @IsOptional()
+  notes: string;
 }

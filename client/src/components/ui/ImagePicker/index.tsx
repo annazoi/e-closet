@@ -1,99 +1,181 @@
-import { useRef, useState, useEffect } from "react";
+import { useImperativeFilePicker } from "use-file-picker";
+import {
+  FileAmountLimitValidator,
+  FileTypeValidator,
+  FileSizeValidator,
+  // ImageDimensionsValidator,
+} from "use-file-picker/validators";
+import { FC, useEffect, useState } from "react";
+import { Button, SimpleGrid, Box } from "@chakra-ui/react";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import "./style.css";
-import { MdCancel } from "react-icons/md";
-
-import { Image } from "../../../interfaces/components";
+import {
+  ImagePickerItemData,
+  Image,
+  ImagePickerFile,
+} from "../../../interfaces/components";
+// import Spinner from "../Spinner";
 
 interface ImagePickerProps {
-  name?: string;
-  onChange: (image: Image) => void;
-  value?: Image;
-  text?: any;
-  register?: any;
-  removeImage?: boolean;
+  label: string;
+  maxFiles?: number;
+  multiple?: boolean;
+  accept?: string;
+  name: string;
+  images?: ImagePickerFile[];
+  onChange: (data: ImagePickerItemData) => void;
+  onImageDelete?: (data: string) => void;
 }
 
-const ImagePicker = ({
+const ImagePicker: FC<ImagePickerProps> = ({
+  images,
+  label,
   name,
   onChange,
-  value,
-  removeImage,
-}: ImagePickerProps) => {
-  const imageRef: any = useRef(null);
-  const [image, setImage] = useState<Image | null>(null);
+  onImageDelete,
+  multiple = true,
+  accept = "image/*",
+  maxFiles = 5,
+}) => {
+  const [filteredImages, setFilteredImages] = useState<ImagePickerFile[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Image[]>([]);
 
   useEffect(() => {
-    setImage(value || null);
-  }, [value]);
+    if (images && images.length > 0 && filteredImages.length == 0) {
+      setFilteredImages(images);
+    }
+  }, [images]);
 
-  const handleImageClick = () => {
-    imageRef.current.click();
+  const FilePickerButton = ({ label }: { label: string }) => {
+    return (
+      <Button
+        onClick={() => openFilePicker()}
+        leftIcon={<MdOutlineAddPhotoAlternate />}
+        bg={"primary.500"}
+        color={"white"}
+        _hover={{
+          bg: "primary.600",
+        }}
+      >
+        {label}
+      </Button>
+    );
   };
 
-  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const newImage: Image = {
-        id: value?.id || "",
-        file: file,
-      };
-      setImage(newImage);
-      onChange(newImage);
+  const { openFilePicker, filesContent, loading, errors, removeFileByIndex } =
+    useImperativeFilePicker({
+      readAs: "DataURL",
+      accept: accept,
+      multiple: multiple,
+      validators: [
+        new FileAmountLimitValidator({ max: maxFiles }),
+        new FileTypeValidator(["jpg", "png", "jpeg"]),
+        new FileSizeValidator({ maxFileSize: 50 * 1024 * 1024 /* 50 MB */ }),
+        //   new ImageDimensionsValidator({
+        //     maxHeight: 900,
+        //     maxWidth: 1600,
+        //     minHeight: 600,
+        //     minWidth: 768,
+        //   }),
+      ],
+      onFilesSuccessfullySelected: ({ plainFiles }) => {
+        const filesWithIds = plainFiles.map((file, index) => ({
+          id: index.toString(),
+          file: file,
+        }));
+        setSelectedImages((prev) => [...prev, ...filesWithIds]);
+
+        onChange({
+          name,
+          files: filesWithIds,
+        });
+      },
+    });
+
+  if (errors.length) {
+    return (
+      <div>
+        <FilePickerButton label="Something went wrong,retry" />
+
+        {errors.map((err: any) => (
+          <div>
+            {err.name}: {err.reason}{" "}
+            {err?.reasons?.map((reason: string) => (
+              <p>{reason}</p>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // if (loading) {
+  //   return <Spinner loading={true} />;
+  // }
+
+  const removeImage = (index: number, imageId?: string) => {
+    if (imageId) {
+      setFilteredImages((prev) =>
+        prev.filter((image: ImagePickerFile) => image.id != imageId)
+      );
+      onImageDelete?.(imageId);
+    } else {
+      removeFileByIndex(index);
+      const newImages = selectedImages.filter((_, i) => i != index);
+      setSelectedImages(newImages);
+
+      onChange({
+        name,
+        files: newImages,
+      });
     }
+  };
+
+  const ImageContainer = ({
+    image,
+    index,
+    imageId,
+  }: {
+    image: string;
+    index: number;
+    imageId?: string;
+  }) => {
+    return (
+      <div className="image-container">
+        <IoIosCloseCircleOutline
+          className="image-remove-button"
+          onClick={() => removeImage(index, imageId)}
+        />
+        <img className="image-picker-image" alt={"image"} src={image}></img>
+      </div>
+    );
   };
 
   return (
     <div>
-      <input
-        type="file"
-        className="image-input"
-        name={name}
-        onChange={handleImage}
-        accept="image/x-png,image/gif,image/jpeg, image/jpg, image/png"
-        ref={imageRef}
-      />
-      {image && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            marginTop: "30px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              position: "relative",
-              gap: "10px",
-            }}
-          >
-            <img
-              onClick={handleImageClick}
-              style={{
-                width: "100px",
-                height: "100px",
-                borderRadius: "10px",
-              }}
-              src={URL.createObjectURL(image.file)}
-              alt={name}
-            />
-          </div>
-          {removeImage && (
-            <MdCancel
-              style={{
-                position: "absolute",
-                width: "25px",
-                height: "25px",
-                marginLeft: "85px",
-                marginTop: "-8px",
-                cursor: "pointer",
-                color: "red",
-              }}
-            ></MdCancel>
-          )}
-        </div>
-      )}
+      <FilePickerButton label={label} />
+      <Box rounded={"sm"} boxShadow={"sm"} p={1}>
+        {filesContent.length > 0 && (
+          <SimpleGrid mt={2} columns={{ sm: 2, md: 3 }} spacing={2}>
+            {filesContent.map((file, index) => (
+              <ImageContainer key={index} image={file.content} index={index} />
+            ))}
+          </SimpleGrid>
+        )}
+        {!!filteredImages?.length && (
+          <SimpleGrid mt={2} columns={{ sm: 2, md: 3 }} spacing={2}>
+            {filteredImages?.map((image, index) => (
+              <ImageContainer
+                key={index}
+                imageId={image.id}
+                image={image.file}
+                index={index}
+              />
+            ))}
+          </SimpleGrid>
+        )}
+      </Box>
     </div>
   );
 };

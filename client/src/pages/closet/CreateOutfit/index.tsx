@@ -28,12 +28,19 @@ import { authStore } from "../../../store/authStore";
 import { Clothe } from "../../../interfaces/clothe";
 import { ClotheCategories } from "../../../enums/clothes";
 import Canvas from "../../../components/ui/Canvas";
-import { CLOTHE_TYPES_ARRAY } from "../../../constants/clotheTypes";
+import {
+  CLOTHE_TYPES,
+  CLOTHE_TYPES_ARRAY,
+  CLOTHE_TYPES_LABELS,
+} from "../../../constants/clotheTypes";
 import Modal from "../../../components/ui/Modal";
 import { getClothes } from "../../../services/clothe";
 import { NewOutfit } from "../../../interfaces/outfit";
 import { createOutfit } from "../../../services/outfit";
 import Input from "../../../components/ui/Input";
+import { OptionItem } from "../../../interfaces/components";
+import Select from "../../../components/ui/Select";
+import { OUTFIT_TYPES } from "../../../constants/outfittypes";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -159,67 +166,64 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
       >
         <ModalBody pb={6}>
           <HStack>
-            <Grid>
+            <Grid gap={8}>
               <Accordion defaultIndex={[0]} allowMultiple w={"100%"} pb={6}>
-                {CLOTHE_TYPES_ARRAY.map((type: string, index: number) => (
+                {CLOTHE_TYPES.map((item: OptionItem, index: number) => (
                   <AccordionItem key={index}>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
-                        {type}
+                        {item.label}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel pb={4}>
                       <HStack spacing={"20px"}>
                         {clothes &&
-                          clothes[type] &&
-                          clothes[type].map((clothe: Clothe, index: number) => (
-                            <div key={index}>
-                              {clothe.images.map(
-                                (image: any, index: number) => (
-                                  <Image
-                                    key={index}
-                                    boxSize="100%"
-                                    objectFit="cover"
-                                    src={image.file}
-                                    alt=""
-                                    onClick={() =>
-                                      handleSelectedClothes(clothe)
-                                    }
-                                    border={
-                                      selectedClothes.find(
-                                        (item: any) => item.id === clothe.id
-                                      )
-                                        ? "2px solid red"
-                                        : ""
-                                    }
-                                  />
-                                )
-                              )}
-                            </div>
-                          ))}
+                          clothes[item.value] &&
+                          clothes[item.value].map(
+                            (clothe: Clothe, index: number) => (
+                              <div key={index}>
+                                {clothe.images.map(
+                                  (image: any, index: number) => (
+                                    <Image
+                                      key={index}
+                                      boxSize="100%"
+                                      objectFit="cover"
+                                      src={image.file}
+                                      alt=""
+                                      onClick={() =>
+                                        handleSelectedClothes(clothe)
+                                      }
+                                      border={
+                                        selectedClothes.find(
+                                          (item: any) => item.id === clothe.id
+                                        )
+                                          ? "2px solid red"
+                                          : ""
+                                      }
+                                    />
+                                  )
+                                )}
+                              </div>
+                            )
+                          )}
                       </HStack>
                     </AccordionPanel>
                   </AccordionItem>
                 ))}
               </Accordion>
-              <Input
-                placeholder="Enter Outfit Type"
+              <Select
                 onChange={handleType}
-                label="Outfit Type"
-                required
-              />
+                options={OUTFIT_TYPES}
+                placeholder="Select Type"
+              ></Select>
 
               <Input
                 label="Color Scheme"
                 placeholder="total black, colorfull..."
                 onChange={handleColorScheme}
               />
-              <Textarea
-                placeholder="Add notes..."
-                mt={4}
-                onChange={handleNotes}
-              />
+              <Textarea placeholder="Add notes..." onChange={handleNotes} />
             </Grid>
 
             <div

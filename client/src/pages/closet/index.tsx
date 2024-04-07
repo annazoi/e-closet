@@ -20,6 +20,7 @@ import { authStore } from "../../store/authStore";
 import { deleteOutfit, getOutfit, getOutfits } from "../../services/outfit";
 import { useMutation, useQuery } from "react-query";
 import ChakraCarousel from "../../components/ui/ChakraCarousel";
+import Clothes from "../../components/Clothes";
 
 const Closet: FC = () => {
   const {
@@ -139,6 +140,7 @@ const Closet: FC = () => {
             No Outfits yet
           </Text>
         )}
+        <Clothes />
       </Box>
     </>
   );

@@ -2,6 +2,7 @@ import {
   Button,
   ModalBody,
   ModalFooter,
+  Textarea,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -9,7 +10,11 @@ import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
-import { Image } from "../../../interfaces/components";
+import {
+  Image,
+  ImagePickerFile,
+  ImagePickerItemData,
+} from "../../../interfaces/components";
 import { Clothe, NewClothe } from "../../../interfaces/clothe";
 import Select from "../../../components/ui/Select";
 import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
@@ -21,20 +26,22 @@ interface CreateItemProps {
 }
 
 const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
-  const [selectedImages, setSelectedImages] = useState<Image[]>([]);
-  const [season, setSeason] = useState<any[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [season, setSeason] = useState<string[]>([]);
   const [category, setCategory] = useState("");
+  const [notes, setNotes] = useState("");
 
   const toast = useToast();
 
-  const handleImageChange = (image: Image) => {
-    setSelectedImages([image]);
+  const handleImageChange = (value: ImagePickerItemData) => {
+    const filesToStore = value.files.map((image: any) => image.file);
+    setSelectedImages(filesToStore);
   };
 
   const { mutate: createClotheMutate, isLoading: createClotheIsLoading } =
     useMutation({
-      mutationFn: ({ images, type, season }: NewClothe) =>
-        createClothe({ images, type, season }),
+      mutationFn: ({ images, type, season, notes }: NewClothe) =>
+        createClothe({ images, type, season, notes }),
     });
 
   const handleSave = () => {
@@ -48,6 +55,7 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
         images: selectedImages,
         type: category,
         season: season,
+        notes: notes,
       },
       {
         onSuccess: () => {
@@ -72,6 +80,10 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
     setSeason([e.target.value]);
   };
 
+  const handleNotes = (e: any) => {
+    setNotes(e.target.value);
+  };
+
   return (
     <>
       <Modal
@@ -91,7 +103,17 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
               options={SEASONS}
               placeholder="Select Season"
             />
-            <ImagePicker onChange={handleImageChange} />
+            <ImagePicker
+              onChange={handleImageChange}
+              label="Select Image"
+              name="image"
+              // images={selectedImages}
+            />
+            <Textarea
+              placeholder="Add notes..."
+              mt={4}
+              onChange={handleNotes}
+            />
           </div>
         </ModalBody>
         <ModalFooter>

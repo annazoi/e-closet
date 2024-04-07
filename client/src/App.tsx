@@ -4,8 +4,8 @@ import NavigationBar from "./components/NavigationBar";
 import Register from "./pages/auth/register";
 import Login from "./pages/auth/login";
 import Home from "./pages/home";
-import Clothe from "./pages/clothes";
-import CreateOutfit from "./pages/clothes/CreateOutfit";
+import Clothe from "./pages/closet";
+import CreateOutfit from "./pages/closet/CreateOutfit";
 import About from "./pages/about";
 import { authStore } from "./store/authStore";
 

@@ -7,6 +7,7 @@ export const formatClothe = (data: any): Clothe => {
     images: data.images,
     type: data.type,
     season: data.season,
+    notes: data.notes,
     user: formatUser(data.userId),
   };
 };

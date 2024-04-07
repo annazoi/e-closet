@@ -25,5 +25,8 @@ export class Clothe {
 
   @Prop()
   season: string[];
+
+  @Prop()
+  notes: string;
 }
 export const ClotheSchema = SchemaFactory.createForClass(Clothe);
