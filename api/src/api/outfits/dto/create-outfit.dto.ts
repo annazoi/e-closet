@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateOutfitDto {
   @IsArray()
@@ -9,7 +9,7 @@ export class CreateOutfitDto {
   colorScheme: string;
 
   @IsOptional()
-  @IsString()
+  @IsNumber()
   rating: number;
 
   @IsOptional()

@@ -51,7 +51,7 @@ const NavigationBar = (props: any) => {
           ml={12}
           fontWeight={"bold"}
         >
-          e-Closet
+          we-Closet
         </Heading>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>

@@ -4,7 +4,9 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Validate,
 } from 'class-validator';
+import { IsNumberOrString } from 'src/validators/isNumberOrString';
 
 export class SignUpDto {
   @IsEmail()
@@ -19,9 +21,9 @@ export class SignUpDto {
   @IsNotEmpty()
   password: string;
 
-  @IsNumber()
+  @Validate(IsNumberOrString)
   @IsOptional()
-  age: number;
+  age: string;
 
   @IsOptional()
   avatar: any;
