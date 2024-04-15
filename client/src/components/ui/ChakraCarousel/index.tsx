@@ -412,7 +412,8 @@ const Item = ({
       onBlur={handleBlur}
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
-      w={`${itemWidth}px`}
+      // w={`${itemWidth}px`}
+      w={{ base: `${itemWidth}px`, md: "100%" }}
       _notLast={{
         mr: `${gap}px`,
       }}

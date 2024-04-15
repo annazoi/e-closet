@@ -89,7 +89,7 @@ const Home: FC = () => {
                       // xl: "75rem",
                       // xxl: "87.5rem",
                     }}
-                    minW={{ base: "100%" }}
+                    minW={{ base: "100%", md: "100%" }}
                   >
                     <ChakraCarousel gap={32}>
                       {categorizedOutfits[item.value].map((outfit, index) => (
