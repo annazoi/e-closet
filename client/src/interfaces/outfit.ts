@@ -17,3 +17,7 @@ export interface Outfit {
   type: string;
   [key: string]: any;
 }
+
+export interface CategorizedOutfits {
+  [key: string]: any[];
+}

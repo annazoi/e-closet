@@ -17,6 +17,8 @@ import {
   Button,
   Flex,
   Box,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
@@ -206,7 +208,7 @@ const Slider = ({
           onClick={handleDecrementClick}
           onFocus={handleFocus}
           mr={`${gap / 3}px`}
-          color="gray.200"
+          color={useColorModeValue("pink.200", "gray.200")}
           variant="link"
           minW={0}
         >
@@ -231,7 +233,7 @@ const Slider = ({
           onClick={handleIncrementClick}
           onFocus={handleFocus}
           ml={`${gap / 3}px`}
-          color="gray.200"
+          color={useColorModeValue("pink.200", "gray.200")}
           variant="link"
           zIndex={2}
           minW={0}

@@ -52,8 +52,7 @@ const ImagePicker: FC<ImagePickerProps> = ({
       <Button
         onClick={() => openFilePicker()}
         leftIcon={<MdOutlineAddPhotoAlternate />}
-        bg={"primary.500"}
-        color={"white"}
+        bg={"pink.100"}
         _hover={{
           bg: "primary.600",
         }}
@@ -155,7 +154,7 @@ const ImagePicker: FC<ImagePickerProps> = ({
   return (
     <div>
       <FilePickerButton label={label} />
-      <Box rounded={"sm"} boxShadow={"sm"} p={1}>
+      <Box rounded={"sm"}>
         {filesContent.length > 0 && (
           <SimpleGrid mt={2} columns={{ sm: 2, md: 3 }} spacing={2}>
             {filesContent.map((file, index) => (

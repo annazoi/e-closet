@@ -25,7 +25,7 @@ import React from "react";
 import "./style.css";
 import { useMutation, useQuery } from "react-query";
 import { authStore } from "../../../store/authStore";
-import { Clothe } from "../../../interfaces/clothe";
+import { CategorizedClothes, Clothe } from "../../../interfaces/clothe";
 import { ClotheCategories } from "../../../enums/clothes";
 import Canvas from "../../../components/ui/Canvas";
 import {
@@ -41,6 +41,7 @@ import Input from "../../../components/ui/Input";
 import { OptionItem } from "../../../interfaces/components";
 import Select from "../../../components/ui/Select";
 import { OUTFIT_TYPES } from "../../../constants/outfittypes";
+import { categorizeClothes } from "../../../utils/categorizeClothes";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -51,10 +52,6 @@ import { OUTFIT_TYPES } from "../../../constants/outfittypes";
 interface CreateOutfitProps {
   isOpen: any;
   onClose: any;
-}
-
-interface CategorizedClothes {
-  [key: string]: any[];
 }
 
 const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
@@ -73,7 +70,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
 
     {
       onSuccess: (data: Clothe[]) => {
-        categorizeClothes(data);
+        categorizeClothes({ data, setClothes });
       },
     }
   );
@@ -105,20 +102,6 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
       return;
     }
     setSelectedClothes([...selectedClothes, clothe]);
-  };
-
-  const categorizeClothes = (data: Clothe[]) => {
-    let tempClothes: { [key: string]: any[] } = {};
-
-    for (let i = 0; i < CLOTHE_TYPES_ARRAY.length; i++) {
-      tempClothes[CLOTHE_TYPES_ARRAY[i]] = [];
-      for (let j = 0; j < data?.length; j++) {
-        if (CLOTHE_TYPES_ARRAY[i] === data[j]?.type) {
-          tempClothes[CLOTHE_TYPES_ARRAY[i]].push(data[j]);
-        }
-      }
-    }
-    setClothes(tempClothes);
   };
 
   const handleNewOutfit = () => {
@@ -262,9 +245,7 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
             Save
           </Button>
 
-          <Button onClick={onClose} variant={"outline"}>
-            Cancel
-          </Button>
+          <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </>

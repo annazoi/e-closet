@@ -31,3 +31,7 @@ export interface ClotheImage {
   id: string;
   file: string;
 }
+
+export interface CategorizedClothes {
+  [key: string]: any[];
+}

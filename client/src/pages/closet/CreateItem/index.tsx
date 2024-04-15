@@ -109,11 +109,7 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
               name="image"
               // images={selectedImages}
             />
-            <Textarea
-              placeholder="Add notes..."
-              mt={4}
-              onChange={handleNotes}
-            />
+            <Textarea placeholder="Add notes..." onChange={handleNotes} />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -128,7 +124,7 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
             Save
           </Button>
 
-          <Button onClick={onClose} variant={"outline"} w={"100%"}>
+          <Button onClick={onClose} w={"100%"}>
             Cancel
           </Button>
         </ModalFooter>

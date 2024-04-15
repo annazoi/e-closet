@@ -38,7 +38,7 @@ const Closet: FC = () => {
   const [outfitsImages, setOutfitsImages] = useState<string[][]>([]);
   const [outfits, setOutfits] = useState<any[]>([]);
 
-  useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["outfits", { userId: userId }],
     queryFn: () => getOutfits({ userId: userId }),
     onSuccess: (data) => {
