@@ -15,7 +15,7 @@
 
 ## Getting Started
 
-### 1. Clone this repository: `https://github.com/annazoi/chat-ionic.git`
+### 1. Clone this repository: `https://github.com/annazoi/e-closet.git`
 
 ### 2. Navigate to the project directory
 
