@@ -62,7 +62,7 @@ const ImagePicker: FC<ImagePickerProps> = ({
     );
   };
 
-  const { openFilePicker, filesContent, loading, errors, removeFileByIndex } =
+  const { openFilePicker, filesContent, errors, removeFileByIndex } =
     useImperativeFilePicker({
       readAs: "DataURL",
       accept: accept,

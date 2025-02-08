@@ -10,12 +10,8 @@ import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
 import { useMutation } from "react-query";
 import Modal from "../../../components/ui/Modal";
-import {
-  Image,
-  ImagePickerFile,
-  ImagePickerItemData,
-} from "../../../interfaces/components";
-import { Clothe, NewClothe } from "../../../interfaces/clothe";
+import { ImagePickerItemData } from "../../../interfaces/components";
+import { NewClothe } from "../../../interfaces/clothe";
 import Select from "../../../components/ui/Select";
 import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
 import { createClothe } from "../../../services/clothe";

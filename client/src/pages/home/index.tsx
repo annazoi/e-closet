@@ -15,7 +15,7 @@ import { OUTFIT_TYPES, OUTFIT_TYPES_ARRAY } from "../../constants/outfittypes";
 import { OptionItem } from "../../interfaces/components";
 
 const Home: FC = () => {
-  const [outfits, setOutfits] = useState<any[]>([]);
+  // const [outfits, setOutfits] = useState<any[]>([]);
   const [categorizedOutfits, setCategorizedOutfits] =
     useState<CategorizedOutfits>();
 
@@ -23,7 +23,7 @@ const Home: FC = () => {
     queryKey: ["outfits"],
     queryFn: () => getOutfits(),
     onSuccess: (data) => {
-      setOutfits(data);
+      // setOutfits(data);
       categorizeOutfits(data);
     },
   });

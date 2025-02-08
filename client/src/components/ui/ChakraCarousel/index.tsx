@@ -1,6 +1,4 @@
-//TODO: Properly handle user tabbing
-
-import React, {
+import {
   useLayoutEffect,
   useCallback,
   useEffect,
@@ -17,7 +15,6 @@ import {
   Button,
   Flex,
   Box,
-  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 

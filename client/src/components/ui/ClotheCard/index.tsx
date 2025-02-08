@@ -1,18 +1,7 @@
 import { FC } from "react";
-import { Outfit } from "../../../interfaces/outfit";
-import {
-  Grid,
-  Flex,
-  Heading,
-  Tag,
-  useColorModeValue,
-  Button,
-  Text,
-  Box,
-} from "@chakra-ui/react";
-import { MdOutlineStarRate } from "react-icons/md";
+import { Grid, useColorModeValue, Button, Text, Box } from "@chakra-ui/react";
 import { capsFirst } from "../../../utils";
-import { Clothe, ClotheImage } from "../../../interfaces/clothe";
+import { ClotheImage } from "../../../interfaces/clothe";
 import Carousel from "../Carousel";
 interface ClotheCardProps {
   clothe: any;

@@ -1,4 +1,3 @@
-import { Image } from "./components";
 import { User } from "./user";
 
 export interface NewClothe {

@@ -12,7 +12,7 @@ import {
 import ChakraCarousel from "../ui/ChakraCarousel";
 import { CategorizedClothes, Clothe } from "../../interfaces/clothe";
 import ClotheCard from "../ui/ClotheCard";
-import { CLOTHE_TYPES, CLOTHE_TYPES_ARRAY } from "../../constants/clotheTypes";
+import { CLOTHE_TYPES } from "../../constants/clotheTypes";
 import { OptionItem } from "../../interfaces/components";
 import { categorizeClothes } from "../../utils/categorizeClothes";
 

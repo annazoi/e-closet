@@ -1,19 +1,9 @@
 import { FC } from "react";
 import Modal from "../ui/Modal";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Flex,
-  Grid,
-  Image,
-  ModalBody,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Grid, Image, ModalBody } from "@chakra-ui/react";
 import { Outfit as OutfitInterface } from "../../interfaces/outfit";
 import { capsFirstLowerThen } from "../../utils";
-import { MdOutlineStarRate } from "react-icons/md";
-import Rating from "../ui/Rating";
+// import Rating from "../ui/Rating";
 import { authStore } from "../../store/authStore";
 
 interface OutfitProps {
@@ -49,7 +39,7 @@ const Outfit: FC<OutfitProps> = ({ isOpen, onClose, outfit }) => {
             ))}
           </Grid>
           {/* <ButtonGroup> */}
-          <Rating value={outfit?.rating}></Rating>
+          {/* <Rating value={outfit?.rating}></Rating> */}
           {outfit?.userId.id === userId && <Button>Edit</Button>}
           {/* </ButtonGroup> */}
         </Box>

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { ResizableBox, Resizable } from "react-resizable";
 import {
   Accordion,
   AccordionItem,
@@ -8,7 +7,6 @@ import {
   AccordionIcon,
   Box,
   Image,
-  Stack,
   HStack,
   ModalBody,
   ModalFooter,
@@ -17,22 +15,13 @@ import {
   VStack,
   useToast,
   Grid,
-  Flex,
-  Text,
   Textarea,
 } from "@chakra-ui/react";
-import React from "react";
 import "./style.css";
 import { useMutation, useQuery } from "react-query";
 import { authStore } from "../../../store/authStore";
 import { CategorizedClothes, Clothe } from "../../../interfaces/clothe";
-import { ClotheCategories } from "../../../enums/clothes";
-import Canvas from "../../../components/ui/Canvas";
-import {
-  CLOTHE_TYPES,
-  CLOTHE_TYPES_ARRAY,
-  CLOTHE_TYPES_LABELS,
-} from "../../../constants/clotheTypes";
+import { CLOTHE_TYPES } from "../../../constants/clotheTypes";
 import Modal from "../../../components/ui/Modal";
 import { getClothes } from "../../../services/clothe";
 import { NewOutfit } from "../../../interfaces/outfit";

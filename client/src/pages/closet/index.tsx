@@ -9,7 +9,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { IoShirt } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import CreateItem from "./CreateItem";
@@ -17,8 +17,8 @@ import OutfitCard from "../../components/ui/OutfitCard";
 
 import CreateOutfit from "./CreateOutfit";
 import { authStore } from "../../store/authStore";
-import { deleteOutfit, getOutfit, getOutfits } from "../../services/outfit";
-import { useMutation, useQuery } from "react-query";
+import { getOutfits } from "../../services/outfit";
+import { useQuery } from "react-query";
 import ChakraCarousel from "../../components/ui/ChakraCarousel";
 import Clothes from "../../components/Clothes";
 
@@ -35,19 +35,19 @@ const Closet: FC = () => {
   } = useDisclosure();
 
   const { userId } = authStore((state) => state);
-  const [outfitsImages, setOutfitsImages] = useState<string[][]>([]);
+  // const [outfitsImages, setOutfitsImages] = useState<string[][]>([]);
   const [outfits, setOutfits] = useState<any[]>([]);
 
-  const { isLoading } = useQuery({
+  const {} = useQuery({
     queryKey: ["outfits", { userId: userId }],
     queryFn: () => getOutfits({ userId: userId }),
     onSuccess: (data) => {
-      const imagesOutfit = data?.map((outfit: any) => {
-        return outfit.clothes.map((clothe: any) => {
-          return clothe.clothe.images[0].file;
-        });
-      });
-      setOutfitsImages(imagesOutfit);
+      // const imagesOutfit = data?.map((outfit: any) => {
+      //   return outfit.clothes.map((clothe: any) => {
+      //     return clothe.clothe.images[0].file;
+      //   });
+      // });
+      // setOutfitsImages(imagesOutfit);
 
       const dataClothes = data?.map((clothe: any) => {
         return clothe;
@@ -56,9 +56,9 @@ const Closet: FC = () => {
     },
   });
 
-  const { mutate: deleteOutfitMutate } = useMutation((id: string) =>
-    deleteOutfit(id)
-  );
+  // const { mutate: deleteOutfitMutate } = useMutation((id: string) =>
+  //   deleteOutfit(id)
+  // );
 
   // const handleDeleteOutfit = (outfitId: string) => {
   //   deleteOutfitMutate(outfitId);
