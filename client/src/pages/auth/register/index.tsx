@@ -66,11 +66,13 @@ const Register: FC = () => {
             text="Username"
             register={register("username")}
             error={errors.username?.message}
+            placeholder="Enter your username"
           />
           <Input
             text="Email"
             register={register("email")}
             error={errors.email?.message}
+            placeholder="Enter your email"
           />
           {/* <Input
             text="Age"
@@ -82,6 +84,7 @@ const Register: FC = () => {
             text="Password"
             register={register("password")}
             error={errors.password?.message}
+            placeholder="Enter your password"
           />
           <Button
             type="submit"
