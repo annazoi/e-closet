@@ -8,6 +8,7 @@ import { UserModule } from './api/users/users.module';
 import { AwsS3Module } from './aws-s3/aws-s3.module';
 import { OutfitsModule } from './api/outfits/outfits.module';
 import { ClothesModule } from './api/clothes/clothes.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -34,5 +35,6 @@ import { ClothesModule } from './api/clothes/clothes.module';
       useClass: ThrottlerGuard,
     },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
