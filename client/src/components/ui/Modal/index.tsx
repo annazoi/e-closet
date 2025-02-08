@@ -1,15 +1,9 @@
 import {
   Modal as ChakraModal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Wrap,
-  WrapItem,
-  useToast,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { FC } from "react";
 
