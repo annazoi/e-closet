@@ -63,12 +63,14 @@ const Login: FC = () => {
           text="Email"
           register={register("email")}
           error={errors.email?.message}
+          placeholder="Enter your email"
         />
         {errors.email && <p className="auth-error">Invalid Email</p>}
         <Input
           text="Password"
           register={register("password")}
           error={errors.password?.message}
+          placeholder="Enter your password"
         />
         {errors.password && <p className="auth-error">Invalid Password</p>}
 
@@ -80,7 +82,7 @@ const Login: FC = () => {
           mt={5}
           mb={8}
         >
-          Sign Ip
+          Sign In
         </Button>
         <Button
           onClick={() => {
