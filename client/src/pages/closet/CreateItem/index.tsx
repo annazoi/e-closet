@@ -1,11 +1,4 @@
-import {
-  Button,
-  ModalBody,
-  ModalFooter,
-  Textarea,
-  useColorModeValue,
-  useToast,
-} from "@chakra-ui/react";
+import { ModalBody, ModalFooter, Textarea, useToast } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import ImagePicker from "../../../components/ui/ImagePicker";
 import { useMutation } from "react-query";
@@ -15,6 +8,7 @@ import { NewClothe } from "../../../interfaces/clothe";
 import Select from "../../../components/ui/Select";
 import { CLOTHE_TYPES, SEASONS } from "../../../constants/clotheTypes";
 import { createClothe } from "../../../services/clothe";
+import Button from "../../../components/ui/Button";
 
 interface CreateItemProps {
   isOpen: any;
@@ -110,19 +104,19 @@ const CreateItem: FC<CreateItemProps> = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            onClick={handleSave}
+            text="Save"
+            width="100%"
+            marginRight={3}
             isLoading={createClotheIsLoading}
             loadingText="Saving"
-            bg={useColorModeValue("pink.300", "black")}
-            w={"100%"}
-            mr={3}
-          >
-            Save
-          </Button>
-
-          <Button onClick={onClose} w={"100%"}>
-            Cancel
-          </Button>
+            onClick={handleSave}
+          />
+          <Button
+            text="Close"
+            width="100%"
+            onClick={onClose}
+            secondary={true}
+          />
         </ModalFooter>
       </Modal>
     </>

@@ -10,8 +10,6 @@ import {
   HStack,
   ModalBody,
   ModalFooter,
-  Button,
-  useColorModeValue,
   VStack,
   useToast,
   Grid,
@@ -31,6 +29,7 @@ import { OptionItem } from "../../../interfaces/components";
 import Select from "../../../components/ui/Select";
 import { OUTFIT_TYPES } from "../../../constants/outfittypes";
 import { categorizeClothes } from "../../../utils/categorizeClothes";
+import Button from "../../../components/ui/Button";
 
 // {
 //  shirts:[{images:[],type:'',season:[]},{images:[],type:'',season:[]}],
@@ -224,17 +223,14 @@ const CreateOutfit: FC<CreateOutfitProps> = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            onClick={handleNewOutfit}
+            text="Save"
             isLoading={CreateOutfitIsLoading}
             loadingText="Saving"
-            bg={useColorModeValue("pink.300", "black")}
-            // w={"100%"}
-            mr={3}
-          >
-            Save
-          </Button>
+            marginRight={3}
+            onClick={handleNewOutfit}
+          />
 
-          <Button onClick={onClose}>Cancel</Button>
+          <Button text="Close" secondary={true} onClick={onClose} />
         </ModalFooter>
       </Modal>
     </>

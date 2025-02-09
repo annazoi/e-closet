@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   ButtonGroup,
   ChakraProvider,
   Container,
@@ -21,6 +20,7 @@ import { getOutfits } from "../../services/outfit";
 import { useQuery } from "react-query";
 import ChakraCarousel from "../../components/ui/ChakraCarousel";
 import Clothes from "../../components/Clothes";
+import Button from "../../components/ui/Button";
 
 const Closet: FC = () => {
   const {
@@ -73,21 +73,17 @@ const Closet: FC = () => {
         />
         <ButtonGroup>
           <Button
+            text="Add Item"
+            width="100%"
             onClick={onOpenItem}
             rightIcon={<IoShirt />}
-            bg={useColorModeValue("pink.300", "black")}
-            w={"100%"}
-          >
-            Add Item
-          </Button>
+          />
           <Button
+            text="Create Outfit"
             onClick={onOpenOutfit}
             rightIcon={<GiClothes />}
-            bg={useColorModeValue("pink.300", "black")}
-            w={"100%"}
-          >
-            Create Outfit
-          </Button>
+            width="100%"
+          />
         </ButtonGroup>
 
         <CreateItem isOpen={isOpenitem} onClose={onCloseItem} />

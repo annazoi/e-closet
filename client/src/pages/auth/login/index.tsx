@@ -1,4 +1,4 @@
-import { Box, Button, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
 import Input from "../../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
@@ -8,7 +8,9 @@ import { SignInSchema } from "../../../validation-schemas/auth";
 import { useMutation } from "react-query";
 import { signIn } from "../../../services/auth";
 import { authStore } from "../../../store/authStore";
+
 import "./style.css";
+import Button from "../../../components/ui/Button";
 
 const Login: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -76,26 +78,24 @@ const Login: FC = () => {
         {errors.password && <p className="auth-error">Invalid Password</p>}
 
         <Button
+          text="Sign In"
           type="submit"
           isLoading={isLoadingSignIn}
-          loadingText={isLoadingSignIn ? "Signing In" : "Sign In"}
-          bg={useColorModeValue("pink.300", "black")}
-          w={"100%"}
-          mt={5}
-          mb={8}
-        >
-          Sign In
-        </Button>
+          loadingText="Signing In"
+          marginBottom={5}
+          marginTop={3}
+          width={"100%"}
+        />
         <Button
+          text="I don't have account"
+          variant={"outline"}
+          bg={useColorModeValue("white", "gray.900")}
+          width={"100%"}
+          marginBottom={3}
           onClick={() => {
             navigate("/register");
           }}
-          variant={"outline"}
-          w={"100%"}
-          mb={3}
-        >
-          I don't have account
-        </Button>
+        />
       </form>
     </Box>
   );
