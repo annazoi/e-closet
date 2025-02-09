@@ -68,7 +68,7 @@ const Home: FC = () => {
           {categorizedOutfits &&
             categorizedOutfits[item.value] &&
             categorizedOutfits[item.value].length > 0 && (
-              <div key={index}>
+              <div key={index} style={{ width: "100%" }}>
                 <Heading
                   size="xl"
                   textAlign="start"
