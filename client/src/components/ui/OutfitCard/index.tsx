@@ -88,36 +88,38 @@ const OutfitCard: FC<OutfitCardProps> = ({ outfit }) => {
       </Grid>
 
       <Grid
-        gap={8}
+        gap={5}
         w={{
           base: "100%",
           md: "100%",
         }}
       >
         <Grid gap={2}>
-          <Box
-            bg={useColorModeValue("pink.100", "gray.100")}
-            p={2}
-            borderRadius={5}
-            // w={"100%"}
-          >
-            <Text
-              color={useColorModeValue("black", "white")}
-              fontSize={12}
-              textAlign={"left"}
+          {outfit.notes && (
+            <Box
+              bg={useColorModeValue("pink.100", "gray.100")}
+              p={2}
+              borderRadius={5}
+              // w={"100%"}
             >
-              Notes:
-            </Text>
-            <Text
-              fontSize={12}
-              color={useColorModeValue("black", "white")}
-              textAlign={"left"}
-            >
-              {capsFirst(outfit.notes)}
-            </Text>
-          </Box>
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize={12}
+                textAlign={"left"}
+              >
+                Notes:
+              </Text>
+              <Text
+                fontSize={12}
+                color={useColorModeValue("black", "white")}
+                textAlign={"left"}
+              >
+                {capsFirst(outfit.notes)}
+              </Text>
+            </Box>
+          )}
 
-          <Text textAlign={"left"}>{outfit.userId.username}</Text>
+          <Text textAlign={"left"}>by: {outfit.userId.username}</Text>
         </Grid>
         <Button
           // onClick={() => alert(`Post ${post.id - 5} clicked`)}
