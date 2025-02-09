@@ -1,6 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateClotheDto } from './dto/create-clothe.dto';
-import { UpdateClotheDto } from './dto/update-clothe.dto';
 import { Clothe } from 'src/schemas/clothe.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Error } from 'mongoose';

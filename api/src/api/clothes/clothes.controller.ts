@@ -3,9 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   UseGuards,
   UseInterceptors,
   Req,
@@ -14,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ClothesService } from './clothes.service';
 import { CreateClotheDto } from './dto/create-clothe.dto';
-import { UpdateClotheDto } from './dto/update-clothe.dto';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { Clothe } from 'src/schemas/clothe.schema';
 import { JwtGuard } from '../auth/guard';
