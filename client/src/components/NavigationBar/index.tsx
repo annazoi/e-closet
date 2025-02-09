@@ -9,8 +9,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
+  Image,
 } from "@chakra-ui/react";
 
+import logo from "../../assets/barbie.png";
 import { CiMenuBurger } from "react-icons/ci";
 import MenuContent from "./MenuContent";
 
@@ -27,6 +29,7 @@ const NavigationBar = (props: any) => {
         w={"100%"}
         h={"50px"}
         boxShadow={"0 2px 5px 0px rgba(0,0,0,0.2)"}
+        display={"flex"}
       >
         <IconButton
           bg={useColorModeValue("pink.200", "gray.800")}
@@ -42,16 +45,25 @@ const NavigationBar = (props: any) => {
           mt={1}
           ml={1}
         ></IconButton>
+        <Image
+          src={logo}
+          alt="logo"
+          boxSize="40px"
+          ml={5}
+          mt={1}
+          display={{ base: "none", md: "flex" }}
+        />
+
         <Heading
           color={useColorModeValue("pink.300", "white")}
-          display={{ base: "none", md: "block" }}
+          display={{ base: "none", md: "flex" }}
           fontStyle={"Helvetica"}
           textAlign={"start"}
           mt={1}
-          ml={12}
+          ml={4}
           fontWeight={"bold"}
         >
-          e-Closet
+          E-Closet
         </Heading>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>

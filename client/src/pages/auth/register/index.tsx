@@ -1,4 +1,4 @@
-import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, useColorModeValue, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../../components/ui/Input";
 import { FC } from "react";
@@ -9,6 +9,7 @@ import { signUp } from "../../../services/auth";
 import { useMutation } from "react-query";
 import { authStore } from "../../../store/authStore";
 import Button from "../../../components/ui/Button";
+import logo from "../../../assets/barbie.png";
 
 const Register: FC = () => {
   const { logIn } = authStore((state) => state);
@@ -51,13 +52,21 @@ const Register: FC = () => {
   }
 
   return (
-    <>
+    <div style={{ width: "100%" }}>
+      <Image
+        src={logo}
+        boxSize="200px"
+        mx="auto"
+        mt={5}
+        display={{ base: "block", md: "none" }}
+      />
       <Box
         borderRadius="lg"
         p={5}
         maxW={"600px"}
         textAlign={"start"}
         boxShadow={"0 2px 5px 0 rgba(0,0,0,0.2)"}
+        mt={5}
         // bg={useColorModeValue("gray.300", "gray.900")}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -110,7 +119,7 @@ const Register: FC = () => {
           />
         </form>
       </Box>
-    </>
+    </div>
   );
 };
 export default Register;
