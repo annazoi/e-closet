@@ -24,7 +24,8 @@ const Register: FC = () => {
     resolver: yupResolver(SignupSchema as any),
   });
 
-  const { mutate: signUpMutate } = useMutation(signUp);
+  const { isLoading: isLoadingSignUp, mutate: signUpMutate } =
+    useMutation(signUp);
 
   function onSubmit(values: any) {
     // const age = parseInt(data.age);
@@ -88,6 +89,7 @@ const Register: FC = () => {
           />
           <Button
             type="submit"
+            isLoading={isLoadingSignUp}
             loadingText="Submitting"
             bg={useColorModeValue("pink.300", "black")}
             w={"100%"}

@@ -14,7 +14,8 @@ const Login: FC = () => {
   const { logIn } = authStore((state) => state);
   const navigate = useNavigate();
 
-  const { mutate: signInMutate } = useMutation(signIn);
+  const { isLoading: isLoadingSignIn, mutate: signInMutate } =
+    useMutation(signIn);
 
   const {
     handleSubmit,
@@ -76,7 +77,8 @@ const Login: FC = () => {
 
         <Button
           type="submit"
-          loadingText="Submitting"
+          isLoading={isLoadingSignIn}
+          loadingText={isLoadingSignIn ? "Signing In" : "Sign In"}
           bg={useColorModeValue("pink.300", "black")}
           w={"100%"}
           mt={5}
